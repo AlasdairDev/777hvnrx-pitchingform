@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Received - 777heaven Records</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="success-message">
+            <h1>Submission Received</h1>
+            <p class="success-subtitle">Your pitch has been successfully submitted to 777heaven Records.</p>
+            
+            <% if (submission.compilations && submission.compilations.length > 0) { %>
+            <div class="compilation-section">
+                <h2>Assigned Compilations</h2>
+                <p>Your track has been automatically added to these playlists:</p>
+                <div class="compilation-tags">
+                    <% submission.compilations.forEach(comp => { %>
+                        <span class="compilation-tag"><%= comp %></span>
+                    <% }); %>
+                </div>
+            </div>
+            <% } %>
+
+            <div class="next-steps">
+                <h3>What Happens Next?</h3>
+                <ul>
+                    <li>We'll review your submission within 5-7 business days</li>
+                    <li>Make sure you've also pitched on Spotify for Artists</li>
+                    <li>We need at least 2 weeks lead time for best results</li>
+                    <li>Check your email for updates on your submission</li>
+                </ul>
+            </div>
+
+            <div class="submission-summary">
+                <h3>Your Submission</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <strong>Artist</strong>
+                        <p><%= submission.primaryArtist %></p>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Track</strong>
+                        <p><%= submission.productTitle %></p>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Format</strong>
+                        <p><%= submission.format %></p>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Release Date</strong>
+                        <p><%= new Date(submission.releaseDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Genre</strong>
+                        <p><%= submission.genre %></p>
+                    </div>
+                    <div class="summary-item">
+                        <strong>Vibe</strong>
+                        <p><%= submission.vibe %></p>
+                    </div>
+                </div>
+            </div>
+
+            <a href="/" class="btn-primary">Submit Another Pitch</a>
+        </div>
+
+        <footer>
+            <p>777heaven Records © 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

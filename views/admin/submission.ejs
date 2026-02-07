@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= submission.productTitle %> - 777heaven Records Admin</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <div class="header-content">
+                <h1>Submission Details</h1>
+                <div class="header-actions">
+                    <a href="/admin/dashboard" class="btn-back">← Dashboard</a>
+                    <a href="/admin/logout" class="btn-logout">Logout</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="submission-detail">
+            <div class="detail-header">
+                <h2><%= submission.productTitle %></h2>
+                <p class="artist-name">by <%= submission.primaryArtist %></p>
+                <p class="submission-date">Submitted: <%= new Date(submission.timestamp).toLocaleString() %></p>
+            </div>
+
+            <!-- Assigned Compilations -->
+            <div class="detail-section">
+                <h3>Assigned Compilations</h3>
+                <% if (submission.compilations && submission.compilations.length > 0) { %>
+                    <div class="compilation-tags-admin">
+                        <% submission.compilations.forEach(comp => { %>
+                            <span class="compilation-tag"><%= comp %></span>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <p style="color: var(--gray);">Not assigned to any compilations yet</p>
+                <% } %>
+            </div>
+
+            <!-- Artist Information -->
+            <div class="detail-section">
+                <h3>Artist Information</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <strong>Primary Artist(s)</strong>
+                        <p><%= submission.primaryArtist %></p>
+                    </div>
+                    <% if (submission.featuringArtist) { %>
+                    <div class="detail-item">
+                        <strong>Featuring</strong>
+                        <p><%= submission.featuringArtist %></p>
+                    </div>
+                    <% } %>
+                    <div class="detail-item full-width">
+                        <strong>Artist Bio</strong>
+                        <p><%= submission.artistBio %></p>
+                    </div>
+                    <div class="detail-item full-width">
+                        <strong>Social Media</strong>
+                        <p><%= submission.socials %></p>
+                    </div>
+                    <div class="detail-item full-width">
+                        <strong>Artist Images</strong>
+                        <p><a href="<%= submission.artistImages %>" target="_blank" rel="noopener"><%= submission.artistImages %></a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Release Information -->
+            <div class="detail-section">
+                <h3>Release Information</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <strong>Product Title</strong>
+                        <p><%= submission.productTitle %></p>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Format</strong>
+                        <p><span class="badge"><%= submission.format %></span></p>
+                    </div>
+                    <% if (submission.focusTrack) { %>
+                    <div class="detail-item">
+                        <strong>Focus Track</strong>
+                        <p><%= submission.focusTrack %></p>
+                    </div>
+                    <% } %>
+                    <div class="detail-item">
+                        <strong>Release Date</strong>
+                        <p><%= new Date(submission.releaseDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                    </div>
+                    <% if (submission.upc) { %>
+                    <div class="detail-item">
+                        <strong>UPC/EAN</strong>
+                        <p class="copyable" onclick="copyToClipboard(this.textContent, this)"><%= submission.upc %></p>
+                    </div>
+                    <% } %>
+                    <% if (submission.spotifyUri) { %>
+                    <div class="detail-item">
+                        <strong>Spotify URI</strong>
+                        <p class="copyable" onclick="copyToClipboard(this.textContent, this)"><%= submission.spotifyUri %></p>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Musical Details -->
+            <div class="detail-section">
+                <h3>Musical Details</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <strong>Genre</strong>
+                        <p><%= submission.genre %></p>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Vibe/Mood</strong>
+                        <p><%= submission.vibe %></p>
+                    </div>
+                    <div class="detail-item full-width">
+                        <strong>Song Description</strong>
+                        <p><%= submission.songDescription %></p>
+                    </div>
+                    <div class="detail-item full-width">
+                        <strong>Marketing Blurb</strong>
+                        <p><%= submission.marketingBlurb %></p>
+                    </div>
+                    <div class="detail-item full-width">
+                        <strong>Keywords</strong>
+                        <p><%= submission.keywords %></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Information -->
+            <div class="detail-section">
+                <h3>Technical Information</h3>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <strong>Dolby Atmos</strong>
+                        <p><%= submission.dolbyAtmos %></p>
+                    </div>
+                    <% if (submission.debutRelease) { %>
+                    <div class="detail-item">
+                        <strong>Debut Release</strong>
+                        <p><%= submission.debutRelease %></p>
+                    </div>
+                    <% } %>
+                    <% if (submission.canvasLink) { %>
+                    <div class="detail-item full-width">
+                        <strong>Spotify Canvas</strong>
+                        <p><a href="<%= submission.canvasLink %>" target="_blank" rel="noopener"><%= submission.canvasLink %></a></p>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="detail-actions">
+                <form action="/admin/submission/<%= submission.id %>/delete" method="POST" onsubmit="return confirm('Delete this submission? This cannot be undone.');">
+                    <button type="submit" class="btn-delete-large">Delete Submission</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text, element) {
+            navigator.clipboard.writeText(text).then(() => {
+                const original = element.textContent;
+                element.textContent = 'Copied!';
+                element.style.color = 'var(--green)';
+                setTimeout(() => {
+                    element.textContent = original;
+                    element.style.color = '';
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>

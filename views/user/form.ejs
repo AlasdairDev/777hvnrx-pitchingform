@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Pitch - 777heaven Records</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo">777heaven Records</h1>
+            <p class="tagline">Priority Pitching</p>
+            
+            <div class="intro-box">
+                <p>Submit your pitch <strong>at least 2 weeks before release</strong>. Fields marked with <span class="required">*</span> are required.</p>
+                <p><strong>Priority releases:</strong> Include complete artist info and high-quality images.</p>
+                <p><strong>Important:</strong> Also pitch on <strong>Spotify for Artists</strong>. If not possible, let us know so we can pitch on your behalf.</p>
+            </div>
+        </header>
+
+        <form action="/submit" method="POST" id="submission-form">
+            <!-- Artist Information -->
+            <div class="form-section">
+                <div class="section-title">Artist Information</div>
+                
+                <div class="form-group">
+                    <label for="primaryArtist">Primary Artist(s) <span class="required">*</span></label>
+                    <input type="text" id="primaryArtist" name="primaryArtist" required autocomplete="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="featuringArtist">Featuring Artist(s)</label>
+                    <input type="text" id="featuringArtist" name="featuringArtist" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label for="artistImages">Artist Image(s) Link <span class="required">*</span></label>
+                    <input type="url" id="artistImages" name="artistImages" required placeholder="https://drive.google.com/...">
+                    <div class="helper-text">Upload high-resolution photo with plain background, preferably square format. Paste Google Drive folder link.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="artistBio">Artist Bio <span class="required">*</span></label>
+                    <textarea id="artistBio" name="artistBio" required placeholder="Concise introduction highlighting background, musical style, and notable achievements..." maxlength="1000"></textarea>
+                    <div class="helper-text"><span class="char-count" data-target="artistBio">0</span> / 1000 characters</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="socials">Social Media Links <span class="required">*</span></label>
+                    <textarea id="socials" name="socials" required placeholder="Instagram: https://...&#10;Spotify: https://...&#10;TikTok: https://..."></textarea>
+                    <div class="helper-text">One link per line</div>
+                </div>
+            </div>
+
+            <!-- Release Information -->
+            <div class="form-section">
+                <div class="section-title">Release Details</div>
+
+                <div class="form-group">
+                    <label for="productTitle">Product Title <span class="required">*</span></label>
+                    <input type="text" id="productTitle" name="productTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="format">Format <span class="required">*</span></label>
+                    <select id="format" name="format" required>
+                        <option value="">Select format</option>
+                        <option value="Single">Single</option>
+                        <option value="EP">EP</option>
+                        <option value="Album">Album</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="focusTrackGroup" style="display: none;">
+                    <label for="focusTrack">Focus Track</label>
+                    <input type="text" id="focusTrack" name="focusTrack">
+                    <div class="helper-text">Required for EP or Album</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="upc">UPC/EAN</label>
+                    <input type="text" id="upc" name="upc" placeholder="123456789012">
+                    <div class="helper-text">ONErpm Dashboard → Latest Releases → select track → View UPC and ISRC</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="spotifyUri">Spotify URI</label>
+                    <input type="text" id="spotifyUri" name="spotifyUri" placeholder="spotify:track:...">
+                    <div class="helper-text">Spotify for Artists → Music → select track → (…) → Copy Spotify URI</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="releaseDate">Release Date <span class="required">*</span></label>
+                    <input type="date" id="releaseDate" name="releaseDate" required>
+                    <div class="helper-text" id="release-date-warning" style="display: none; color: var(--red);"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="genre">Genre <span class="required">*</span></label>
+                    <select id="genre" name="genre" required>
+                        <option value="">Select genre</option>
+                        <option value="Indie Rock">Indie Rock</option>
+                        <option value="Dream Pop">Dream Pop</option>
+                        <option value="Lo-Fi">Lo-Fi / Bedroom Pop</option>
+                        <option value="Folk">Indie Folk / Singer-Songwriter</option>
+                        <option value="Electronic">Indie Electronic / Synth Pop</option>
+                        <option value="Alternative">Alternative / Art Rock</option>
+                        <option value="Post-Punk">Post-Punk / Garage Rock</option>
+                        <option value="Shoegaze">Shoegaze / Noise Pop</option>
+                        <option value="Emo">Emo / Math Rock</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="vibe">Vibe/Mood <span class="required">*</span></label>
+                    <select id="vibe" name="vibe" required>
+                        <option value="">Select vibe</option>
+                        <option value="Chill">Chill / Laid-back</option>
+                        <option value="Energetic">Energetic / Upbeat</option>
+                        <option value="Melancholic">Melancholic / Introspective</option>
+                        <option value="Dark">Dark / Moody</option>
+                        <option value="Dreamy">Dreamy / Ethereal</option>
+                        <option value="Raw">Raw / Emotional</option>
+                        <option value="Nostalgic">Nostalgic / Vintage</option>
+                        <option value="Experimental">Experimental / Avant-garde</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Content Details -->
+            <div class="form-section">
+                <div class="section-title">Content & Marketing</div>
+
+                <div class="form-group">
+                    <label for="songDescription">Song Description <span class="required">*</span></label>
+                    <textarea id="songDescription" name="songDescription" required placeholder="Brief summary including theme, mood, and unique elements that make it stand out..." maxlength="500"></textarea>
+                    <div class="helper-text"><span class="char-count" data-target="songDescription">0</span> / 500 characters</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="marketingBlurb">Marketing Blurb <span class="required">*</span></label>
+                    <textarea id="marketingBlurb" name="marketingBlurb" required placeholder="Short, engaging pitch focusing on unique sound, themes, or story for playlists and media..." maxlength="300"></textarea>
+                    <div class="helper-text"><span class="char-count" data-target="marketingBlurb">0</span> / 300 characters</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="keywords">Keywords <span class="required">*</span></label>
+                    <input type="text" id="keywords" name="keywords" required placeholder="heartbreak, yearning, moving-on, hugot">
+                    <div class="helper-text">Comma-separated keywords</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="canvasLink">Spotify Canvas Link</label>
+                    <input type="url" id="canvasLink" name="canvasLink" placeholder="https://drive.google.com/...">
+                    <div class="helper-text">Google Drive link to your Spotify Canvas (optional)</div>
+                </div>
+            </div>
+
+            <!-- Technical Information -->
+            <div class="form-section">
+                <div class="section-title">Technical Information</div>
+
+                <div class="form-group">
+                    <label>Is your audio mixed in Dolby Atmos? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" id="dolbyYes" name="dolbyAtmos" value="Yes" required>
+                            <span>Yes</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" id="dolbyNo" name="dolbyAtmos" value="No" required>
+                            <span>No</span>
+                        </label>
+                    </div>
+                    <div class="helper-text">Apple Music requires this information</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Is this your debut release?</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" id="debutYes" name="debutRelease" value="Yes">
+                            <span>Yes</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" id="debutNo" name="debutRelease" value="No">
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button type="submit" id="submit-btn">Submit Pitch</button>
+            </div>
+        </form>
+
+        <footer>
+            <p>777heaven Records © 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        // Character counter
+        const textareas = document.querySelectorAll('textarea[maxlength]');
+        textareas.forEach(textarea => {
+            const counter = document.querySelector(`.char-count[data-target="${textarea.id}"]`);
+            if (counter) {
+                textarea.addEventListener('input', () => {
+                    counter.textContent = textarea.value.length;
+                });
+            }
+        });
+
+        // Show focus track for EP/Album
+        const formatSelect = document.getElementById('format');
+        const focusTrackGroup = document.getElementById('focusTrackGroup');
+        formatSelect.addEventListener('change', () => {
+            if (formatSelect.value === 'EP' || formatSelect.value === 'Album') {
+                focusTrackGroup.style.display = 'block';
+            } else {
+                focusTrackGroup.style.display = 'none';
+            }
+        });
+
+        // Release date validation (2 weeks minimum)
+        const releaseDateInput = document.getElementById('releaseDate');
+        const releaseDateWarning = document.getElementById('release-date-warning');
+        releaseDateInput.addEventListener('change', () => {
+            const selectedDate = new Date(releaseDateInput.value);
+            const today = new Date();
+            const twoWeeksFromNow = new Date(today.getTime() + (14 * 24 * 60 * 60 * 1000));
+            
+            if (selectedDate < twoWeeksFromNow) {
+                releaseDateWarning.textContent = 'Warning: Less than 2 weeks notice. Priority consideration may be limited.';
+                releaseDateWarning.style.display = 'block';
+            } else {
+                releaseDateWarning.style.display = 'none';
+            }
+        });
+
+        // Form submission feedback
+        const form = document.getElementById('submission-form');
+        const submitBtn = document.getElementById('submit-btn');
+        form.addEventListener('submit', () => {
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+        });
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        releaseDateInput.setAttribute('min', today);
+    </script>
+</body>
+</html>
