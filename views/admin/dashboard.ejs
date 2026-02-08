@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - 777 Heaven Records</title>
-    <link rel="stylesheet" href="/css/admin.css">
     <style>
         * {
             margin: 0;
@@ -170,26 +169,7 @@
             padding-top: 0.65rem;
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1rem;
-            }
-            
-            .user-name span:first-child {
-                display: none;
-            }
-        }
-
-        /* Page Transition Animations */
-        body {
-            opacity: 1;
-            transition: opacity 0.08s;
-        }
-
-        body.page-transitioning {
-            opacity: 0;
-        }
-
+        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -211,117 +191,215 @@
         }
 
         .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid #343444;
-            border-top-color: #667eea;
+            width: 35px;
+            height: 35px;
+            border: 2px solid #343444;
+            border-top: 2px solid #f4f4f5;
             border-radius: 50%;
-            animation: spin 0.6s linear infinite;
+            animation: spin 0.7s linear infinite;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.15s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .container {
-            padding: 2rem 1.5rem;
             max-width: 1400px;
             margin: 0 auto;
+            padding: 1.5rem;
         }
 
+        /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .stat-card {
             background: #232332;
             border: 1px solid #343444;
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            background: #2a2a3a;
         }
 
         .stat-label {
             font-size: 0.85rem;
             color: #a1a1aa;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .stat-value {
             font-size: 2rem;
             font-weight: 700;
             color: #f4f4f5;
+            margin-bottom: 0.25rem;
         }
 
+        .stat-change {
+            font-size: 0.75rem;
+            color: #71717a;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            background: #232332;
+            border: 1px solid #343444;
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .filters-header h3 {
+            font-size: 1rem;
+            color: #f4f4f5;
+            font-weight: 600;
+        }
+
+        .clear-filters {
+            background: #343444;
+            border: none;
+            color: #d4d4d8;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .clear-filters:hover {
+            background: #52525b;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.8rem;
+            color: #a1a1aa;
+            font-weight: 500;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            background: #1a1a24;
+            border: 1px solid #343444;
+            color: #e4e4e7;
+            padding: 0.65rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: #52525b;
+        }
+
+        /* Tabs */
         .tabs {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.25rem;
             margin-bottom: 1.5rem;
             border-bottom: 1px solid #343444;
             overflow-x: auto;
         }
 
         .tab {
-            padding: 0.75rem 1.25rem;
             background: none;
             border: none;
             color: #a1a1aa;
+            padding: 0.75rem 1.25rem;
             cursor: pointer;
-            text-decoration: none;
-            border-bottom: 2px solid transparent;
+            font-weight: 500;
             transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
             white-space: nowrap;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .tab:hover {
-            color: #e4e4e7;
+            color: #d4d4d8;
         }
 
         .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
+            color: #f4f4f5;
+            border-bottom-color: #f4f4f5;
         }
 
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .tab .count {
+            background: #343444;
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Bulk Actions Bar */
+        .bulk-actions {
+            background: #232332;
+            border: 1px solid #343444;
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
             margin-bottom: 1.5rem;
-            gap: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
 
+        .bulk-actions-label {
+            font-size: 0.85rem;
+            color: #a1a1aa;
+        }
+
         .btn {
-            padding: 0.65rem 1.25rem;
+            padding: 0.5rem 1rem;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.85rem;
             transition: all 0.2s;
-            text-decoration: none;
-            display: inline-block;
+            font-size: 0.85rem;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
         }
 
         .btn-primary {
-            background: #667eea;
-            color: white;
+            background: #f4f4f5;
+            color: #0f0f1a;
         }
 
         .btn-primary:hover {
-            background: #5568d3;
+            background: #e4e4e7;
         }
 
         .btn-secondary {
@@ -330,37 +408,28 @@
         }
 
         .btn-secondary:hover {
-            background: #3f3f50;
+            background: #52525b;
         }
 
         .btn-danger {
-            background: #ef4444;
-            color: white;
+            background: #991b1b;
+            color: #fecaca;
         }
 
         .btn-danger:hover {
-            background: #dc2626;
+            background: #b91c1c;
         }
 
-        .btn-success {
-            background: #22c55e;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #16a34a;
-        }
-
-        .btn-sm {
-            padding: 0.5rem 0.9rem;
-            font-size: 0.8rem;
-        }
-
-        .table-container {
+        /* Submissions Table */
+        .submissions-container {
             background: #232332;
             border: 1px solid #343444;
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
         }
 
         table {
@@ -370,60 +439,89 @@
 
         thead {
             background: #1a1a24;
+            border-bottom: 1px solid #343444;
         }
 
         th {
             padding: 1rem;
             text-align: left;
             font-weight: 600;
+            color: #f4f4f5;
             font-size: 0.85rem;
-            color: #a1a1aa;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            white-space: nowrap;
         }
 
-        td {
-            padding: 1rem;
-            border-top: 1px solid #343444;
-            font-size: 0.9rem;
+        tbody tr {
+            border-bottom: 1px solid #343444;
+            transition: background 0.2s;
         }
 
         tbody tr:hover {
             background: #1a1a24;
         }
 
+        tbody tr.selected {
+            background: #2a2a3a;
+        }
+
+        td {
+            padding: 1rem;
+            color: #d4d4d8;
+            font-size: 0.85rem;
+        }
+
+        .artist-cell {
+            font-weight: 500;
+            color: #f4f4f5;
+        }
+
         .badge {
-            padding: 0.35rem 0.75rem;
-            border-radius: 20px;
+            padding: 0.25rem 0.65rem;
+            border-radius: 4px;
             font-size: 0.75rem;
             font-weight: 600;
             display: inline-block;
+            text-transform: uppercase;
         }
 
-        .badge-pending { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
-        .badge-reviewed { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
-        .badge-approved { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
-        .badge-rejected { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .badge-pending { background: #422006; color: #fbbf24; }
+        .badge-reviewed { background: #1e3a8a; color: #60a5fa; }
+        .badge-approved { background: #14532d; color: #4ade80; }
+        .badge-rejected { background: #7f1d1d; color: #f87171; }
 
-        .actions {
+        .actions-cell {
             display: flex;
             gap: 0.5rem;
-            flex-wrap: wrap;
         }
 
+        .icon-btn {
+            background: #343444;
+            border: none;
+            color: #d4d4d8;
+            padding: 0.4rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .icon-btn:hover {
+            background: #52525b;
+        }
+
+        /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 4rem 2rem;
-            color: #a1a1aa;
+            padding: 3rem 2rem;
+            color: #71717a;
         }
 
         .empty-state h3 {
-            font-size: 1.25rem;
+            color: #e4e4e7;
             margin-bottom: 0.5rem;
-            color: #d4d4d8;
         }
 
-        /* Modal Styles */
+        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -431,15 +529,13 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(4px);
             display: none;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             z-index: 2000;
+            padding: 1rem;
             opacity: 0;
             transition: opacity 0.2s;
-            padding: 1rem;
-            overflow-y: auto;
         }
 
         .modal-overlay.active {
@@ -447,98 +543,91 @@
             opacity: 1;
         }
 
-        .modal-content {
-            background: #232332;
-            border: 1px solid #343444;
-            border-radius: 12px;
-            width: 100%;
+        .modal {
+            background: #1a1a24;
+            border-radius: 6px;
             max-width: 1200px;
+            width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            transform: scale(0.95);
-            transition: transform 0.2s;
             position: relative;
         }
 
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
-        }
-
         .modal-header {
-            padding: 1.5rem 2rem;
+            padding: 1.5rem;
             border-bottom: 1px solid #343444;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
-            background: #232332;
-            z-index: 10;
+            background: #1a1a24;
+            z-index: 1;
         }
 
         .modal-header h2 {
-            font-size: 1.25rem;
             color: #f4f4f5;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
-        .modal-close {
+        .close-btn {
             background: none;
             border: none;
             color: #a1a1aa;
             font-size: 1.5rem;
             cursor: pointer;
-            padding: 0.25rem 0.5rem;
+            padding: 0.25rem;
             line-height: 1;
             transition: color 0.2s;
         }
 
-        .modal-close:hover {
+        .close-btn:hover {
             color: #f4f4f5;
         }
 
         .modal-body {
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         .modal-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .modal-card {
-            background: rgba(255, 255, 255, 0.03);
+            background: #232332;
             border: 1px solid #343444;
-            border-radius: 8px;
-            padding: 1.5rem;
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
         }
 
         .modal-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 1.25rem;
-            color: #667eea;
+            color: #f4f4f5;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
         }
 
         .detail-row {
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
         }
 
         .detail-label {
             font-size: 0.8rem;
             color: #a1a1aa;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.25rem;
         }
 
         .detail-value {
-            font-size: 1rem;
             color: #e4e4e7;
-            word-wrap: break-word;
+            font-size: 0.9rem;
         }
 
         .detail-value a {
-            color: #667eea;
+            color: #60a5fa;
             text-decoration: none;
         }
 
@@ -553,286 +642,308 @@
         }
 
         .compilation-badge {
-            padding: 0.4rem 0.9rem;
-            background: rgba(102, 126, 234, 0.2);
-            border: 1px solid rgba(102, 126, 234, 0.3);
-            border-radius: 20px;
+            background: #343444;
+            color: #d4d4d8;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
             font-size: 0.8rem;
         }
 
         .status-form {
-            margin-bottom: 1.25rem;
-        }
-
-        .status-form select {
-            width: 100%;
-            padding: 0.85rem 1rem;
-            background: #1a1a24;
-            border: 2px solid #667eea;
-            border-radius: 6px;
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            padding-right: 2.5rem;
-        }
-
-        .status-form select option {
-            background: #1a1a24;
-            color: #ffffff;
-            padding: 0.5rem;
-            font-weight: 600;
-        }
-
-        .status-form select:hover {
-            border-color: #764ba2;
-        }
-
-        .status-form select:focus {
-            outline: none;
-            border-color: #764ba2;
-            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.2);
-        }
-
-        .actions-grid {
-            display: grid;
+            display: flex;
+            flex-direction: column;
             gap: 0.75rem;
         }
 
-        .timeline {
-            margin-top: 2rem;
-        }
-
-        .timeline-item {
-            padding: 1rem;
-            border-left: 2px solid rgba(102, 126, 234, 0.3);
-            margin-left: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .timeline-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .timeline-timestamp {
-            font-size: 0.8rem;
-            color: #a1a1aa;
-            margin-bottom: 0.25rem;
-        }
-
-        .timeline-action {
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        .timeline-details {
+        .status-form select {
+            background: #1a1a24;
+            border: 1px solid #343444;
+            color: #e4e4e7;
+            padding: 0.65rem;
+            border-radius: 6px;
             font-size: 0.85rem;
-            color: #d4d4d8;
         }
 
-        @media (max-width: 968px) {
+        .actions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
             .modal-grid {
                 grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 768px) {
-            .modal-body {
-                padding: 1.5rem;
+            .header h1 {
+                font-size: 1rem;
             }
             
-            .modal-header {
-                padding: 1rem 1.5rem;
+            .user-name span:first-child {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bulk-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .table-wrapper {
+                overflow-x: scroll;
+            }
+
+            table {
+                min-width: 800px;
             }
         }
     </style>
 </head>
 <body>
     <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
+    <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
     </div>
 
     <!-- Header -->
     <div class="header">
-        <h1>Admin Dashboard - 777 Heaven Records</h1>
+        <h1>777heaven Admin Portal</h1>
         <div class="burger-menu">
             <div class="user-display">
-                <div class="user-icon"><%= admin.username.charAt(0).toUpperCase() %></div>
+                <div class="user-icon"><%= user.username.charAt(0).toUpperCase() %></div>
                 <div class="user-name">
-                    <span><%= admin.username %></span>
-                    <span><%= admin.role.replace('_', ' ') %></span>
+                    <span><%= user.username %></span>
+                    <span><%= user.role %></span>
                 </div>
             </div>
-            <button class="burger-btn" id="burgerBtn">
+            <button id="burgerBtn" class="burger-btn">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <div class="dropdown-menu" id="dropdownMenu">
+            <div id="dropdownMenu" class="dropdown-menu">
+                <a href="/admin/dashboard">Dashboard</a>
+                <a href="/admin/admins">Admin Management</a>
+                <a href="/admin/audit-logs">Audit Logs</a>
                 <a href="/admin/change-password">Change Password</a>
-                <% if (admin.role === 'super_admin') { %>
-                    <a href="/admin/admins">Manage Admins</a>
-                <% } %>
-                <a href="/admin/logout" class="logout-btn">Logout</a>
+                <button onclick="handleLogout()" class="logout-btn">Logout</button>
             </div>
         </div>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
         <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Total Submissions</div>
                 <div class="stat-value"><%= stats.total %></div>
+                <div class="stat-change">All time</div>
             </div>
+
             <div class="stat-card">
-                <div class="stat-label">Pending</div>
+                <div class="stat-label">Pending Review</div>
                 <div class="stat-value"><%= stats.pending %></div>
+                <div class="stat-change">Awaiting action</div>
             </div>
+
             <div class="stat-card">
                 <div class="stat-label">Reviewed</div>
                 <div class="stat-value"><%= stats.reviewed %></div>
+                <div class="stat-change">Under evaluation</div>
             </div>
+
             <div class="stat-card">
                 <div class="stat-label">Approved</div>
                 <div class="stat-value"><%= stats.approved %></div>
+                <div class="stat-change">Ready to publish</div>
+            </div>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filters-header">
+                <h3>Search & Filters</h3>
+                <button class="clear-filters" onclick="clearFilters()">Clear All</button>
+            </div>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" id="searchInput" placeholder="Artist, song, email..." onkeyup="filterSubmissions()">
+                </div>
+                <div class="filter-group">
+                    <label>Genre</label>
+                    <select id="genreFilter" onchange="filterSubmissions()">
+                        <option value="">All Genres</option>
+                        <option value="Pop">Pop</option>
+                        <option value="Rock">Rock</option>
+                        <option value="Hip-Hop">Hip-Hop</option>
+                        <option value="R&B">R&B</option>
+                        <option value="Electronic">Electronic</option>
+                        <option value="Jazz">Jazz</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Format</label>
+                    <select id="formatFilter" onchange="filterSubmissions()">
+                        <option value="">All Formats</option>
+                        <option value="Single">Single</option>
+                        <option value="EP">EP</option>
+                        <option value="Album">Album</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date From</label>
+                    <input type="date" id="dateFromFilter" onchange="filterSubmissions()">
+                </div>
+                <div class="filter-group">
+                    <label>Date To</label>
+                    <input type="date" id="dateToFilter" onchange="filterSubmissions()">
+                </div>
             </div>
         </div>
 
         <!-- Tabs -->
         <div class="tabs">
-            <a href="/admin/dashboard" class="tab <%= currentView === 'all' ? 'active' : '' %>">All</a>
-            <a href="/admin/dashboard?view=pending" class="tab <%= currentView === 'pending' ? 'active' : '' %>">Pending</a>
-            <a href="/admin/dashboard?view=reviewed" class="tab <%= currentView === 'reviewed' ? 'active' : '' %>">Reviewed</a>
-            <a href="/admin/dashboard?view=approved" class="tab <%= currentView === 'approved' ? 'active' : '' %>">Approved</a>
-            <a href="/admin/dashboard?view=rejected" class="tab <%= currentView === 'rejected' ? 'active' : '' %>">Rejected</a>
-            <a href="/admin/dashboard?view=archived" class="tab <%= currentView === 'archived' ? 'active' : '' %>">Archived</a>
-            <a href="/admin/dashboard?view=deleted" class="tab <%= currentView === 'deleted' ? 'active' : '' %>">Trash</a>
+            <button class="tab active" data-tab="all" onclick="switchTab('all')">
+                All <span class="count"><%= stats.total %></span>
+            </button>
+            <button class="tab" data-tab="pending" onclick="switchTab('pending')">
+                Pending <span class="count"><%= stats.pending %></span>
+            </button>
+            <button class="tab" data-tab="reviewed" onclick="switchTab('reviewed')">
+                Reviewed <span class="count"><%= stats.reviewed %></span>
+            </button>
+            <button class="tab" data-tab="approved" onclick="switchTab('approved')">
+                Approved <span class="count"><%= stats.approved %></span>
+            </button>
+            <button class="tab" data-tab="rejected" onclick="switchTab('rejected')">
+                Rejected <span class="count"><%= stats.rejected %></span>
+            </button>
+            <button class="tab" data-tab="archived" onclick="switchTab('archived')">
+                Archived <span class="count"><%= stats.archived %></span>
+            </button>
+            <button class="tab" data-tab="trash" onclick="switchTab('trash')">
+                Trash <span class="count"><%= stats.deleted %></span>
+            </button>
         </div>
 
-        <!-- Controls -->
-        <div class="controls">
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                <button onclick="selectAll()" class="btn btn-secondary btn-sm">Select All</button>
-                <button onclick="deselectAll()" class="btn btn-secondary btn-sm">Deselect All</button>
-                <% if (currentView !== 'archived' && currentView !== 'deleted') { %>
-                    <button onclick="bulkArchive()" class="btn btn-secondary btn-sm">Archive Selected</button>
-                    <button onclick="bulkDelete()" class="btn btn-danger btn-sm">Delete Selected</button>
-                <% } %>
-                <a href="/admin/export?view=<%= currentView %>&format=csv" class="btn btn-primary btn-sm">Export CSV</a>
+        <!-- Bulk Actions -->
+        <form id="bulkForm" method="POST" action="/admin/bulk-action">
+            <input type="hidden" name="action" id="bulkAction">
+            <input type="hidden" name="submissions" id="bulkSubmissions">
+            
+            <div class="bulk-actions">
+                <span class="bulk-actions-label">
+                    <span id="selectedCount">0</span> selected
+                </span>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="selectAll()">Select All</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="deselectAll()">Deselect All</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="bulkArchive()">Archive Selected</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="bulkDelete()">Delete Selected</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="exportToCSV()">Export CSV</button>
             </div>
-        </div>
+        </form>
 
         <!-- Submissions Table -->
-        <div class="table-container">
-            <% if (submissions.length === 0) { %>
-                <div class="empty-state">
-                    <h3>No submissions found</h3>
-                    <p>There are no submissions in this view.</p>
-                </div>
-            <% } else { %>
-                <form id="bulkForm" method="POST" action="/admin/bulk-action">
-                    <input type="hidden" name="action" id="bulkAction" value="">
-                    <table>
-                        <thead>
+        <div class="submissions-container">
+            <div class="table-wrapper">
+                <table id="submissionsTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"></th>
+                            <th>Artist</th>
+                            <th>Song Title</th>
+                            <th>Genre</th>
+                            <th>Format</th>
+                            <th>Status</th>
+                            <th>Submitted</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="submissionsBody">
+                        <% if (submissions.length === 0) { %>
                             <tr>
-                                <th width="40"><input type="checkbox" id="selectAllCheckbox" onclick="toggleSelectAll()"></th>
-                                <th>Artist</th>
-                                <th>Song</th>
-                                <th>Genre</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Actions</th>
+                                <td colspan="8">
+                                    <div class="empty-state">
+                                        <h3>No submissions found</h3>
+                                        <p>There are no submissions in this view.</p>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <% submissions.forEach(submission => { %>
-                                <tr>
+                        <% } else { %>
+                            <% submissions.forEach(sub => { %>
+                                <tr class="submission-row" 
+                                    data-id="<%= sub.id %>"
+                                    data-status="<%= sub.status || 'pending' %>"
+                                    data-genre="<%= sub.genre %>"
+                                    data-format="<%= sub.format %>"
+                                    data-date="<%= sub.timestamp %>"
+                                    data-archived="<%= sub.archived ? 'true' : 'false' %>"
+                                    data-deleted="<%= sub.deleted ? 'true' : 'false' %>"
+                                    data-search="<%= (sub.artistName + ' ' + sub.songTitle + ' ' + sub.email).toLowerCase() %>">
                                     <td>
-                                        <input type="checkbox" name="submissionIds[]" value="<%= submission.id %>" class="submission-checkbox">
+                                        <input type="checkbox" class="row-checkbox" value="<%= sub.id %>" onchange="updateSelectedCount()">
                                     </td>
-                                    <td><strong><%= submission.artistName %></strong></td>
-                                    <td><%= submission.songTitle %></td>
-                                    <td><%= submission.genre %></td>
+                                    <td class="artist-cell"><%= sub.artistName %></td>
+                                    <td><%= sub.songTitle %></td>
+                                    <td><%= sub.genre %></td>
+                                    <td><%= sub.format %></td>
                                     <td>
-                                        <span class="badge badge-<%= submission.status || 'pending' %>">
-                                            <%= (submission.status || 'pending').toUpperCase() %>
+                                        <span class="badge badge-<%= sub.status || 'pending' %>">
+                                            <%= (sub.status || 'pending').toUpperCase() %>
                                         </span>
                                     </td>
-                                    <td><%= new Date(submission.timestamp).toLocaleDateString() %></td>
+                                    <td><%= new Date(sub.timestamp).toLocaleDateString() %></td>
                                     <td>
-                                        <div class="actions">
-                                            <button onclick="openModal('<%= submission.id %>')" class="btn btn-primary btn-sm">View</button>
-                                            
-                                            <% if (currentView === 'deleted') { %>
-                                                <form method="POST" action="/admin/submission/<%= submission.id %>/restore" style="display: inline;">
-                                                    <button type="submit" class="btn btn-success btn-sm">Restore</button>
-                                                </form>
-                                                <form method="POST" action="/admin/submission/<%= submission.id %>/permanent-delete" style="display: inline;" onsubmit="return confirm('Permanently delete? This cannot be undone!');">
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete Forever</button>
-                                                </form>
-                                            <% } else if (submission.archived) { %>
-                                                <form method="POST" action="/admin/submission/<%= submission.id %>/unarchive" style="display: inline;">
-                                                    <button type="submit" class="btn btn-success btn-sm">Unarchive</button>
-                                                </form>
-                                            <% } else { %>
-                                                <form method="POST" action="/admin/submission/<%= submission.id %>/archive" style="display: inline;">
-                                                    <button type="submit" class="btn btn-secondary btn-sm">Archive</button>
-                                                </form>
-                                                <form method="POST" action="/admin/submission/<%= submission.id %>/delete" style="display: inline;">
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                </form>
-                                            <% } %>
+                                        <div class="actions-cell">
+                                            <button class="icon-btn" onclick="openModal('<%= sub.id %>')" title="View Details">
+                                                View
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                </form>
-            <% } %>
+                            <% }); %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Modal Overlay -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay" onclick="if(event.target === this) closeModal()">
+        <div class="modal">
             <div class="modal-header">
                 <h2>Submission Details</h2>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <button class="close-btn" onclick="closeModal()">×</button>
             </div>
             <div class="modal-body" id="modalBody">
-                <!-- Content will be loaded here -->
+                <!-- Content populated by JavaScript -->
             </div>
         </div>
     </div>
 
-    <!-- Submission data for modal -->
-    <script type="application/json" id="submissionsData">
-        <%- JSON.stringify(submissions) %>
-    </script>
-
     <script>
-        // Submission data for modal
-        const submissionsData = JSON.parse(document.getElementById('submissionsData').textContent);
+        // Store submissions data
+        const submissionsData = <%- JSON.stringify(submissions) %>;
+        let currentTab = 'all';
 
-        // Wait for DOM to be fully loaded
+        // Burger menu
         document.addEventListener('DOMContentLoaded', function() {
-            // Add fade-in animation on page load
-            document.body.classList.add('fade-in');
-            
             const burgerBtn = document.getElementById('burgerBtn');
             const dropdownMenu = document.getElementById('dropdownMenu');
-            const loadingOverlay = document.getElementById('loadingOverlay');
             
-            // Add click event listener to burger button
             if (burgerBtn && dropdownMenu) {
                 burgerBtn.addEventListener('click', function(event) {
                     event.preventDefault();
@@ -842,7 +953,6 @@
                     dropdownMenu.classList.toggle('active');
                 });
                 
-                // Close menu when clicking outside
                 document.addEventListener('click', function(event) {
                     if (!burgerBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
                         burgerBtn.classList.remove('active');
@@ -850,110 +960,211 @@
                     }
                 });
             }
-
-            // Smooth page transitions for all navigation links - ULTRA FAST
-            function addSmoothTransition(element, callback) {
-                element.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Show loading overlay
-                    loadingOverlay.classList.add('active');
-                    document.body.classList.add('page-transitioning');
-                    
-                    // Navigate after animation - SUPER QUICK!
-                    setTimeout(function() {
-                        if (callback) {
-                            callback();
-                        } else {
-                            window.location.href = element.href;
-                        }
-                    }, 80);
-                });
-            }
-
-            // Add smooth transitions to all tab links
-            document.querySelectorAll('.tab').forEach(function(tab) {
-                addSmoothTransition(tab);
-            });
-
-            // Add smooth transitions to dropdown menu links
-            document.querySelectorAll('.dropdown-menu a').forEach(function(link) {
-                addSmoothTransition(link);
-            });
-
-            // Handle form submissions with smooth transitions
-            const bulkForm = document.getElementById('bulkForm');
-            if (bulkForm) {
-                bulkForm.addEventListener('submit', function(e) {
-                    loadingOverlay.classList.add('active');
-                    document.body.classList.add('page-transitioning');
-                });
-            }
-
-            // Handle all forms with smooth transitions
-            document.querySelectorAll('form').forEach(function(form) {
-                form.addEventListener('submit', function(e) {
-                    // Don't prevent default, just show loading
-                    loadingOverlay.classList.add('active');
-                    document.body.classList.add('page-transitioning');
-                });
-            });
-
-            // Close modal when clicking overlay
-            document.getElementById('modalOverlay').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeModal();
-                }
-            });
-
-            // Close modal with ESC key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeModal();
-                }
-            });
         });
 
         function handleLogout() {
             document.getElementById('loadingOverlay').classList.add('active');
-            document.body.classList.add('page-transitioning');
-            setTimeout(function() {
-                window.location.href = '/admin/logout';
-            }, 80);
+            setTimeout(() => window.location.href = '/admin/logout', 80);
         }
 
+        // Tab switching
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+            
+            filterSubmissions();
+        }
+
+        // Filter submissions
+        function filterSubmissions() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const genre = document.getElementById('genreFilter').value;
+            const format = document.getElementById('formatFilter').value;
+            const dateFrom = document.getElementById('dateFromFilter').value;
+            const dateTo = document.getElementById('dateToFilter').value;
+
+            const rows = document.querySelectorAll('.submission-row');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const status = row.dataset.status;
+                const isArchived = row.dataset.archived === 'true';
+                const isDeleted = row.dataset.deleted === 'true';
+                const rowGenre = row.dataset.genre;
+                const rowFormat = row.dataset.format;
+                const rowDate = new Date(row.dataset.date);
+                const searchData = row.dataset.search;
+
+                // Tab filter
+                let tabMatch = false;
+                if (currentTab === 'all') {
+                    tabMatch = !isArchived && !isDeleted;
+                } else if (currentTab === 'archived') {
+                    tabMatch = isArchived && !isDeleted;
+                } else if (currentTab === 'trash') {
+                    tabMatch = isDeleted;
+                } else {
+                    tabMatch = status === currentTab && !isArchived && !isDeleted;
+                }
+
+                // Search filter
+                const searchMatch = !searchTerm || searchData.includes(searchTerm);
+
+                // Genre filter
+                const genreMatch = !genre || rowGenre === genre;
+
+                // Format filter
+                const formatMatch = !format || rowFormat === format;
+
+                // Date filter
+                let dateMatch = true;
+                if (dateFrom) {
+                    dateMatch = dateMatch && rowDate >= new Date(dateFrom);
+                }
+                if (dateTo) {
+                    dateMatch = dateMatch && rowDate <= new Date(dateTo + 'T23:59:59');
+                }
+
+                const isVisible = tabMatch && searchMatch && genreMatch && formatMatch && dateMatch;
+                row.style.display = isVisible ? '' : 'none';
+                if (isVisible) visibleCount++;
+            });
+
+            // Show empty state if no results
+            const tbody = document.getElementById('submissionsBody');
+            const existingEmpty = tbody.querySelector('.empty-state-row');
+            if (existingEmpty) {
+                existingEmpty.remove();
+            }
+
+            if (visibleCount === 0 && submissionsData.length > 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.className = 'empty-state-row';
+                emptyRow.innerHTML = `
+                    <td colspan="8">
+                        <div class="empty-state">
+                            <h3>No results found</h3>
+                            <p>Try adjusting your filters or search term.</p>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(emptyRow);
+            }
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('genreFilter').value = '';
+            document.getElementById('formatFilter').value = '';
+            document.getElementById('dateFromFilter').value = '';
+            document.getElementById('dateToFilter').value = '';
+            filterSubmissions();
+        }
+
+        // Selection functions
         function toggleSelectAll() {
-            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-            const checkboxes = document.querySelectorAll('.submission-checkbox');
-            checkboxes.forEach(cb => cb.checked = selectAllCheckbox.checked);
+            const selectAll = document.getElementById('selectAllCheckbox').checked;
+            document.querySelectorAll('.row-checkbox').forEach(cb => {
+                const row = cb.closest('.submission-row');
+                if (row.style.display !== 'none') {
+                    cb.checked = selectAll;
+                    row.classList.toggle('selected', selectAll);
+                }
+            });
+            updateSelectedCount();
         }
 
         function selectAll() {
-            document.querySelectorAll('.submission-checkbox').forEach(cb => cb.checked = true);
-            document.getElementById('selectAllCheckbox').checked = true;
+            document.querySelectorAll('.row-checkbox').forEach(cb => {
+                const row = cb.closest('.submission-row');
+                if (row.style.display !== 'none') {
+                    cb.checked = true;
+                    row.classList.add('selected');
+                }
+            });
+            updateSelectedCount();
         }
 
         function deselectAll() {
-            document.querySelectorAll('.submission-checkbox').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.row-checkbox').forEach(cb => {
+                cb.checked = false;
+                cb.closest('.submission-row').classList.remove('selected');
+            });
             document.getElementById('selectAllCheckbox').checked = false;
+            updateSelectedCount();
         }
 
+        function updateSelectedCount() {
+            const checked = document.querySelectorAll('.row-checkbox:checked');
+            document.getElementById('selectedCount').textContent = checked.length;
+            
+            checked.forEach(cb => {
+                cb.closest('.submission-row').classList.add('selected');
+            });
+            
+            document.querySelectorAll('.row-checkbox:not(:checked)').forEach(cb => {
+                cb.closest('.submission-row').classList.remove('selected');
+            });
+        }
+
+        // Bulk actions
         function bulkArchive() {
-            if (confirm('Archive selected submissions?')) {
+            const selected = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+            if (selected.length === 0) {
+                alert('Please select submissions to archive');
+                return;
+            }
+            if (confirm(`Archive ${selected.length} submission(s)?`)) {
                 document.getElementById('loadingOverlay').classList.add('active');
-                document.body.classList.add('page-transitioning');
                 document.getElementById('bulkAction').value = 'archive';
+                document.getElementById('bulkSubmissions').value = JSON.stringify(selected);
                 document.getElementById('bulkForm').submit();
             }
         }
 
         function bulkDelete() {
-            if (confirm('Move selected submissions to trash?')) {
+            const selected = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+            if (selected.length === 0) {
+                alert('Please select submissions to delete');
+                return;
+            }
+            if (confirm(`Move ${selected.length} submission(s) to trash?`)) {
                 document.getElementById('loadingOverlay').classList.add('active');
-                document.body.classList.add('page-transitioning');
                 document.getElementById('bulkAction').value = 'delete';
+                document.getElementById('bulkSubmissions').value = JSON.stringify(selected);
                 document.getElementById('bulkForm').submit();
             }
+        }
+
+        function exportToCSV() {
+            const rows = Array.from(document.querySelectorAll('.submission-row'))
+                .filter(row => row.style.display !== 'none');
+            
+            if (rows.length === 0) {
+                alert('No submissions to export');
+                return;
+            }
+
+            let csv = 'Artist,Song Title,Email,Genre,Vibe,Format,Release Date,Status,Submitted\n';
+            
+            rows.forEach(row => {
+                const id = row.dataset.id;
+                const sub = submissionsData.find(s => s.id === id);
+                if (sub) {
+                    csv += `"${sub.artistName}","${sub.songTitle}","${sub.email}","${sub.genre}","${sub.vibe}","${sub.format}","${sub.releaseDate}","${sub.status || 'pending'}","${new Date(sub.timestamp).toLocaleString()}"\n`;
+                }
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `submissions-${currentTab}-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
         }
 
         // Modal functions
@@ -963,7 +1174,6 @@
 
             const modalBody = document.getElementById('modalBody');
             
-            // Build compilations HTML
             let compilationsHtml = '';
             if (submission.compilations && submission.compilations.length > 0) {
                 compilationsHtml = submission.compilations.map(comp => 
@@ -971,7 +1181,6 @@
                 ).join('');
             }
 
-            // Build keywords HTML
             let keywordsHtml = '';
             if (submission.keywords) {
                 keywordsHtml = `
@@ -982,7 +1191,6 @@
                 `;
             }
 
-            // Build archived/deleted info
             let statusInfo = '';
             if (submission.archived) {
                 statusInfo += `
@@ -1009,13 +1217,12 @@
                 `;
             }
 
-            // Build action buttons
             let actionsHtml = '';
             if (!submission.deleted) {
                 if (submission.archived) {
                     actionsHtml = `
                         <form method="POST" action="/admin/submission/${submission.id}/unarchive">
-                            <button type="submit" class="btn btn-success" style="width: 100%;">Unarchive</button>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Unarchive</button>
                         </form>
                     `;
                 } else {
@@ -1031,7 +1238,7 @@
             } else {
                 actionsHtml = `
                     <form method="POST" action="/admin/submission/${submission.id}/restore">
-                        <button type="submit" class="btn btn-success" style="width: 100%;">Restore from Trash</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Restore from Trash</button>
                     </form>
                     <form method="POST" action="/admin/submission/${submission.id}/permanent-delete" onsubmit="return confirm('Permanently delete? This cannot be undone!');">
                         <button type="submit" class="btn btn-danger" style="width: 100%;">Delete Forever</button>
@@ -1041,7 +1248,6 @@
 
             modalBody.innerHTML = `
                 <div class="modal-grid">
-                    <!-- Main Details -->
                     <div class="modal-card">
                         <h3>Submission Details</h3>
 
@@ -1097,7 +1303,7 @@
                         <div class="detail-row">
                             <div class="detail-label">Suggested Compilations</div>
                             <div class="compilations">
-                                ${compilationsHtml}
+                                ${compilationsHtml || '<span style="color: #71717a;">None</span>'}
                             </div>
                         </div>
 
@@ -1107,9 +1313,7 @@
                         </div>
                     </div>
 
-                    <!-- Actions Sidebar -->
                     <div>
-                        <!-- Status Management -->
                         <div class="modal-card">
                             <h3>Status</h3>
                             <div style="margin-bottom: 1.5rem;">
@@ -1129,7 +1333,6 @@
                             </form>
                         </div>
 
-                        <!-- Actions -->
                         <div class="modal-card">
                             <h3>Actions</h3>
                             <div class="actions-grid">
@@ -1137,7 +1340,6 @@
                             </div>
                         </div>
 
-                        <!-- Info -->
                         <div class="modal-card">
                             <h3>Info</h3>
                             <div class="detail-row">
