@@ -137,6 +137,20 @@ app.get('/admin/submission/:id',
     adminController.viewSubmission
 );
 
+// ==================== ADMIN ROUTES ====================
+
+// Import the route file you uploaded
+const adminRoutes = require('./routes/adminRoutes'); // Make sure the filename matches exactly!
+
+// 1. Redirect /admin to /admin/login (This fixes your access issue!)
+app.get('/admin', (req, res) => {
+    res.redirect('/admin/login');
+});
+
+// 2. Use the adminRoutes file for everything else
+// This replaces all those manual app.get/app.post lines you had
+app.use('/admin', adminRoutes);
+
 // ==================== SUBMISSION ACTIONS ====================
 
 // Archive
