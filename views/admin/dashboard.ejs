@@ -907,7 +907,7 @@
                                     <td><%= new Date(sub.timestamp).toLocaleDateString() %></td>
                                     <td>
                                         <div class="actions-cell">
-                                            <button class="icon-btn" onclick="openModal('<%= sub.id %>')" title="View Details">
+                                            <button class="icon-btn view-btn" data-submission-id="<%= sub.id %>" title="View Details">
                                                 View
                                             </button>
                                         </div>
@@ -960,6 +960,17 @@
                     }
                 });
             }
+
+            // Event delegation for View buttons
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('view-btn') || event.target.closest('.view-btn')) {
+                    const button = event.target.classList.contains('view-btn') ? event.target : event.target.closest('.view-btn');
+                    const submissionId = button.getAttribute('data-submission-id');
+                    if (submissionId) {
+                        openModal(submissionId);
+                    }
+                }
+            });
         });
 
         function handleLogout() {
