@@ -118,57 +118,77 @@ exports.showDashboard = (req, res) => {
     console.log('=== SHOW DASHBOARD ===');
     console.log('Admin:', req.admin ? req.admin.username : 'None');
     
-    const view = req.query.view || 'all';
-    const search = req.query.search || '';
-    const filterGenre = req.query.genre || '';
-    const filterStatus = req.query.status || '';
-    
-    let submissions;
-    
-    // Get submissions based on view
-    if (view === 'archived') {
-        submissions = Submission.getArchived();
-    } else if (view === 'deleted') {
-        submissions = Submission.getDeleted();
-    } else if (view === 'all') {
-        submissions = Submission.getAll();
-    } else if (view === 'pending') {
-        submissions = Submission.getActive().filter(s => !s.status || s.status === 'pending');
-    } else if (view === 'reviewed') {
-        submissions = Submission.getActive().filter(s => s.status === 'reviewed');
-    } else if (view === 'approved') {
-        submissions = Submission.getActive().filter(s => s.status === 'approved');
-    } else if (view === 'rejected') {
-        submissions = Submission.getActive().filter(s => s.status === 'rejected');
-    } else {
-        submissions = Submission.getActive();
-    }
-    
-    // Apply search and filters
-    if (search || filterGenre || filterStatus) {
-        submissions = Submission.search(search, {
-            genre: filterGenre,
-            status: filterStatus,
-            archived: view === 'archived'
+    try {
+        const view = req.query.view || 'all';
+        const search = req.query.search || '';
+        const filterGenre = req.query.genre || '';
+        const filterStatus = req.query.status || '';
+        
+        let submissions = [];
+        
+        // Try different methods to get submissions
+        if (view === 'archived') {
+            submissions = Submission.getArchived ? Submission.getArchived() : [];
+        } else if (view === 'deleted') {
+            submissions = Submission.getDeleted ? Submission.getDeleted() : [];
+        } else if (view === 'all') {
+            submissions = Submission.getAll ? Submission.getAll() : [];
+        } else if (view === 'pending') {
+            const allActive = Submission.getActive ? Submission.getActive() : [];
+            submissions = allActive.filter(s => !s.status || s.status === 'pending');
+        } else if (view === 'reviewed') {
+            const allActive = Submission.getActive ? Submission.getActive() : [];
+            submissions = allActive.filter(s => s.status === 'reviewed');
+        } else if (view === 'approved') {
+            const allActive = Submission.getActive ? Submission.getActive() : [];
+            submissions = allActive.filter(s => s.status === 'approved');
+        } else if (view === 'rejected') {
+            const allActive = Submission.getActive ? Submission.getActive() : [];
+            submissions = allActive.filter(s => s.status === 'rejected');
+        } else {
+            submissions = Submission.getActive ? Submission.getActive() : [];
+        }
+        
+        // Apply search and filters if method exists
+        if (search || filterGenre || filterStatus) {
+            if (Submission.search) {
+                submissions = Submission.search(search, {
+                    genre: filterGenre,
+                    status: filterStatus,
+                    archived: view === 'archived'
+                });
+            }
+        }
+        
+        const stats = Submission.getStats ? Submission.getStats() : {
+            total: submissions.length,
+            pending: submissions.filter(s => !s.status || s.status === 'pending').length,
+            reviewed: submissions.filter(s => s.status === 'reviewed').length,
+            approved: submissions.filter(s => s.status === 'approved').length
+        };
+        
+        const recentLogs = Submission.getAuditLogs ? Submission.getAuditLogs(10) : [];
+        
+        console.log('Rendering dashboard with', submissions.length, 'submissions');
+        
+        res.render('admin/dashboard', { 
+            submissions: submissions || [],
+            stats: stats || {},
+            recentLogs: recentLogs || [],
+            admin: req.admin,
+            username: req.session.username || req.admin.username,
+            currentView: view,
+            search,
+            filterGenre,
+            filterStatus
+        });
+    } catch (error) {
+        console.error('Dashboard error:', error);
+        res.status(500).render('admin/error', {
+            message: 'Error loading dashboard: ' + error.message,
+            admin: req.admin
         });
     }
-    
-    const stats = Submission.getStats();
-    const recentLogs = Submission.getAuditLogs(10);
-    
-    console.log('Rendering dashboard with', submissions.length, 'submissions');
-    
-    res.render('admin/dashboard', { 
-        submissions,
-        stats,
-        recentLogs,
-        admin: req.admin,
-        username: req.session.username || req.admin.username,
-        currentView: view,
-        search,
-        filterGenre,
-        filterStatus
-    });
 };
 
 // ==================== SUBMISSION MANAGEMENT ====================
@@ -180,7 +200,7 @@ exports.viewSubmission = (req, res) => {
         return res.redirect('/admin/dashboard');
     }
     
-    const auditLogs = Submission.getSubmissionAuditLogs(req.params.id);
+    const auditLogs = Submission.getSubmissionAuditLogs ? Submission.getSubmissionAuditLogs(req.params.id) : [];
     
     res.render('admin/submission', { 
         submission,
@@ -298,11 +318,11 @@ exports.exportData = (req, res) => {
     
     let submissions;
     if (view === 'archived') {
-        submissions = Submission.getArchived();
+        submissions = Submission.getArchived ? Submission.getArchived() : [];
     } else if (view === 'all') {
-        submissions = Submission.getAll();
+        submissions = Submission.getAll ? Submission.getAll() : [];
     } else {
-        submissions = Submission.getActive();
+        submissions = Submission.getActive ? Submission.getActive() : [];
     }
     
     if (format === 'csv') {
@@ -355,7 +375,7 @@ exports.convertToCSV = (submissions) => {
 
 exports.showAdminManagement = (req, res) => {
     const admins = Admin.getAdmins();
-    const stats = Admin.getStats();
+    const stats = Admin.getStats ? Admin.getStats() : {};
     
     res.render('admin/admin-management', {
         admins,
@@ -508,7 +528,7 @@ exports.changePassword = async (req, res) => {
 
 exports.showAuditLogs = (req, res) => {
     const limit = parseInt(req.query.limit) || 100;
-    const logs = Submission.getAuditLogs(limit);
+    const logs = Submission.getAuditLogs ? Submission.getAuditLogs(limit) : [];
     
     res.render('admin/audit-logs', {
         logs,
