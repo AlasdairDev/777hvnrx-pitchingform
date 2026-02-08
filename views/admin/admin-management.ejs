@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Management - 777 Heaven Records</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e4e4e7;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .role-badge {
+            padding: 0.25rem 0.75rem;
+            background: rgba(118, 75, 162, 0.2);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .breadcrumb {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            color: #a1a1aa;
+        }
+
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e4e4e7;
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.8);
+            color: white;
+        }
+
+        .btn-success {
+            background: rgba(34, 197, 94, 0.8);
+            color: white;
+        }
+
+        .btn-warning {
+            background: rgba(251, 191, 36, 0.8);
+            color: #1a1a2e;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #a1a1aa;
+            margin-top: 0.5rem;
+        }
+
+        .message {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .message-success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+
+        .message-error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        tbody tr {
+            transition: all 0.2s;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-super_admin {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+        }
+
+        .badge-admin {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .badge-moderator {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .badge-active {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .badge-inactive {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .toolbar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .toolbar h2 {
+            color: #667eea;
+            font-size: 1.25rem;
+        }
+
+        .permissions-info {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .permissions-info h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .permission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .permission-item {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .permission-item h4 {
+            color: #e4e4e7;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .permission-list {
+            list-style: none;
+            font-size: 0.85rem;
+            color: #a1a1aa;
+        }
+
+        .permission-list li {
+            padding: 0.25rem 0;
+        }
+
+        .permission-list li::before {
+            content: "✓ ";
+            color: #22c55e;
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎵 777 Heaven Records</h1>
+        <div class="user-info">
+            <span>👤 <%= admin.username %></span>
+            <span class="role-badge"><%= admin.role.replace('_', ' ') %></span>
+            <a href="/admin/dashboard" class="btn btn-secondary btn-sm">Dashboard</a>
+            <a href="/admin/logout" class="btn btn-danger btn-sm">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/admin/dashboard">Dashboard</a>
+            <span>/</span>
+            <span>Admin Management</span>
+        </div>
+
+        <% if (locals.message) { %>
+            <div class="message message-<%= message.type %>">
+                <%= message.text %>
+            </div>
+        <% } %>
+
+        <!-- Stats Dashboard -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.total %></div>
+                <div class="stat-label">Total Admins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.active %></div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.inactive %></div>
+                <div class="stat-label">Inactive</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.byRole.super_admin %></div>
+                <div class="stat-label">Super Admins</div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <h2>👥 Admin Accounts</h2>
+            <% if (admin.role === 'super_admin') { %>
+                <a href="/admin/admins/create" class="btn btn-primary">+ Create New Admin</a>
+            <% } %>
+        </div>
+
+        <!-- Admins Table -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Last Login</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% admins.forEach(adminUser => { %>
+                        <tr>
+                            <td><strong><%= adminUser.username %></strong></td>
+                            <td><%= adminUser.email %></td>
+                            <td>
+                                <span class="badge badge-<%= adminUser.role %>">
+                                    <%= adminUser.role.replace('_', ' ').toUpperCase() %>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge badge-<%= adminUser.isActive ? 'active' : 'inactive' %>">
+                                    <%= adminUser.isActive ? 'ACTIVE' : 'INACTIVE' %>
+                                </span>
+                            </td>
+                            <td>
+                                <% if (adminUser.lastLogin) { %>
+                                    <%= new Date(adminUser.lastLogin).toLocaleDateString() %>
+                                <% } else { %>
+                                    <span style="color: #a1a1aa;">Never</span>
+                                <% } %>
+                            </td>
+                            <td><%= new Date(adminUser.createdAt).toLocaleDateString() %></td>
+                            <td>
+                                <div class="actions">
+                                    <% if (admin.role === 'super_admin' && admin.id !== adminUser.id) { %>
+                                        <form method="POST" action="/admin/admins/<%= adminUser.id %>/toggle-status" style="display: inline;">
+                                            <button type="submit" class="btn <%= adminUser.isActive ? 'btn-warning' : 'btn-success' %> btn-sm">
+                                                <%= adminUser.isActive ? 'Deactivate' : 'Activate' %>
+                                            </button>
+                                        </form>
+                                        <form method="POST" action="/admin/admins/<%= adminUser.id %>/delete" style="display: inline;" onsubmit="return confirm('Delete this admin account? This cannot be undone!');">
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    <% } else if (admin.id === adminUser.id) { %>
+                                        <a href="/admin/change-password" class="btn btn-secondary btn-sm">Change Password</a>
+                                    <% } else { %>
+                                        <span style="color: #a1a1aa; font-size: 0.85rem;">No actions</span>
+                                    <% } %>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Permissions Info -->
+        <div class="permissions-info">
+            <h3>📋 Role Permissions Guide</h3>
+            <div class="permission-grid">
+                <div class="permission-item">
+                    <h4>🔰 Super Admin</h4>
+                    <ul class="permission-list">
+                        <li>All system access</li>
+                        <li>Manage admin accounts</li>
+                        <li>Create/edit/delete submissions</li>
+                        <li>Archive & export data</li>
+                        <li>View audit logs</li>
+                    </ul>
+                </div>
+                <div class="permission-item">
+                    <h4>⭐ Admin</h4>
+                    <ul class="permission-list">
+                        <li>View submissions</li>
+                        <li>Create & edit submissions</li>
+                        <li>Archive submissions</li>
+                        <li>Export data</li>
+                    </ul>
+                </div>
+                <div class="permission-item">
+                    <h4>👁️ Moderator</h4>
+                    <ul class="permission-list">
+                        <li>View submissions</li>
+                        <li>Archive submissions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
