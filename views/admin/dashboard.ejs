@@ -815,25 +815,25 @@
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" data-tab="all" onclick="switchTab('all')">
+            <button class="tab active" data-tab="all">
                 All <span class="count"><%= stats.total %></span>
             </button>
-            <button class="tab" data-tab="pending" onclick="switchTab('pending')">
+            <button class="tab" data-tab="pending">
                 Pending <span class="count"><%= stats.pending %></span>
             </button>
-            <button class="tab" data-tab="reviewed" onclick="switchTab('reviewed')">
+            <button class="tab" data-tab="reviewed">
                 Reviewed <span class="count"><%= stats.reviewed %></span>
             </button>
-            <button class="tab" data-tab="approved" onclick="switchTab('approved')">
+            <button class="tab" data-tab="approved">
                 Approved <span class="count"><%= stats.approved %></span>
             </button>
-            <button class="tab" data-tab="rejected" onclick="switchTab('rejected')">
+            <button class="tab" data-tab="rejected">
                 Rejected <span class="count"><%= stats.rejected %></span>
             </button>
-            <button class="tab" data-tab="archived" onclick="switchTab('archived')">
+            <button class="tab" data-tab="archived">
                 Archived <span class="count"><%= stats.archived %></span>
             </button>
-            <button class="tab" data-tab="trash" onclick="switchTab('trash')">
+            <button class="tab" data-tab="trash">
                 Trash <span class="count"><%= stats.deleted %></span>
             </button>
         </div>
@@ -941,6 +941,8 @@
 
         // Burger menu
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard loaded. Total submissions:', submissionsData.length);
+            
             const burgerBtn = document.getElementById('burgerBtn');
             const dropdownMenu = document.getElementById('dropdownMenu');
             
@@ -961,11 +963,24 @@
                 });
             }
 
+            // Event delegation for tabs
+            document.addEventListener('click', function(event) {
+                const tab = event.target.closest('.tab');
+                if (tab) {
+                    const tabName = tab.getAttribute('data-tab');
+                    console.log('Tab clicked:', tabName);
+                    if (tabName) {
+                        switchTab(tabName);
+                    }
+                }
+            });
+
             // Event delegation for View buttons
             document.addEventListener('click', function(event) {
-                if (event.target.classList.contains('view-btn') || event.target.closest('.view-btn')) {
-                    const button = event.target.classList.contains('view-btn') ? event.target : event.target.closest('.view-btn');
-                    const submissionId = button.getAttribute('data-submission-id');
+                const viewBtn = event.target.closest('.view-btn');
+                if (viewBtn) {
+                    const submissionId = viewBtn.getAttribute('data-submission-id');
+                    console.log('View button clicked for submission:', submissionId);
                     if (submissionId) {
                         openModal(submissionId);
                     }
@@ -980,16 +995,30 @@
 
         // Tab switching
         function switchTab(tab) {
+            console.log('Switching to tab:', tab);
             currentTab = tab;
             
+            // Update active state
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+            const activeTab = document.querySelector(`.tab[data-tab="${tab}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+                console.log('Active tab set:', tab);
+            } else {
+                console.error('Tab not found:', tab);
+            }
             
+            // Deselect all checkboxes when switching tabs
+            deselectAll();
+            
+            // Filter submissions
             filterSubmissions();
         }
 
         // Filter submissions
         function filterSubmissions() {
+            console.log('Filtering submissions for tab:', currentTab);
+            
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const genre = document.getElementById('genreFilter').value;
             const format = document.getElementById('formatFilter').value;
@@ -998,6 +1027,7 @@
 
             const rows = document.querySelectorAll('.submission-row');
             let visibleCount = 0;
+            let tabMatchCount = 0;
 
             rows.forEach(row => {
                 const status = row.dataset.status;
@@ -1017,8 +1047,12 @@
                 } else if (currentTab === 'trash') {
                     tabMatch = isDeleted;
                 } else {
-                    tabMatch = status === currentTab && !isArchived && !isDeleted;
+                    // For status tabs: handle empty status as 'pending'
+                    const effectiveStatus = status || 'pending';
+                    tabMatch = effectiveStatus === currentTab && !isArchived && !isDeleted;
                 }
+
+                if (tabMatch) tabMatchCount++;
 
                 // Search filter
                 const searchMatch = !searchTerm || searchData.includes(searchTerm);
@@ -1042,6 +1076,8 @@
                 row.style.display = isVisible ? '' : 'none';
                 if (isVisible) visibleCount++;
             });
+
+            console.log(`Tab "${currentTab}": ${tabMatchCount} tab matches, ${visibleCount} visible after all filters`);
 
             // Show empty state if no results
             const tbody = document.getElementById('submissionsBody');
