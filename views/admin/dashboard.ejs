@@ -614,14 +614,6 @@
                     class="search-input"
                     value="<%= search %>"
                 >
-                <select name="genre">
-                    <option value="">All Genres</option>
-                    <option value="Indie Rock" <%= filterGenre === 'Indie Rock' ? 'selected' : '' %>>Indie Rock</option>
-                    <option value="Dream Pop" <%= filterGenre === 'Dream Pop' ? 'selected' : '' %>>Dream Pop</option>
-                    <option value="Lo-Fi" <%= filterGenre === 'Lo-Fi' ? 'selected' : '' %>>Lo-Fi</option>
-                    <option value="Folk" <%= filterGenre === 'Folk' ? 'selected' : '' %>>Folk</option>
-                    <option value="Electronic" <%= filterGenre === 'Electronic' ? 'selected' : '' %>>Electronic</option>
-                </select>
                 <select name="status">
                     <option value="">All Status</option>
                     <option value="pending" <%= filterStatus === 'pending' ? 'selected' : '' %>>Pending</option>
