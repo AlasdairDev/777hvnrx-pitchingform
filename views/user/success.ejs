@@ -11,28 +11,6 @@
         <div class="success-message">
             <h1>Submission Received</h1>
             <p class="success-subtitle">Your pitch has been successfully submitted to 777heaven Records.</p>
-            
-            <% if (submission.compilations && submission.compilations.length > 0) { %>
-            <div class="compilation-section">
-                <h2>Assigned Compilations</h2>
-                <p>Your track has been automatically added to these playlists:</p>
-                <div class="compilation-tags">
-                    <% submission.compilations.forEach(comp => { %>
-                        <span class="compilation-tag"><%= comp %></span>
-                    <% }); %>
-                </div>
-            </div>
-            <% } %>
-
-            <div class="next-steps">
-                <h3>What Happens Next?</h3>
-                <ul>
-                    <li>We'll review your submission within 5-7 business days</li>
-                    <li>Make sure you've also pitched on Spotify for Artists</li>
-                    <li>We need at least 2 weeks lead time for best results</li>
-                    <li>Check your email for updates on your submission</li>
-                </ul>
-            </div>
 
             <div class="submission-summary">
                 <h3>Your Submission</h3>
