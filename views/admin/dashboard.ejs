@@ -742,6 +742,30 @@
     </div>
 
     <div class="container">
+        <!-- DIAGNOSTIC PANEL - Remove this after debugging -->
+        <div style="background: #2d2d3d; border: 2px solid #f59e0b; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+            <h3 style="color: #f59e0b; margin-bottom: 0.5rem;">🔍 Diagnostic Info</h3>
+            <div style="font-family: monospace; font-size: 0.85rem;">
+                <p>Total submissions in array: <strong><%= submissions.length %></strong></p>
+                <p>Deleted submissions in array: <strong><%= submissions.filter(s => s.deleted).length %></strong></p>
+                <p>Archived submissions in array: <strong><%= submissions.filter(s => s.archived && !s.deleted).length %></strong></p>
+                <p>Active submissions in array: <strong><%= submissions.filter(s => !s.archived && !s.deleted).length %></strong></p>
+                <% if (submissions.filter(s => s.deleted).length > 0) { %>
+                    <p style="color: #10b981;">✓ Deleted submissions ARE present in the data</p>
+                    <details style="margin-top: 0.5rem;">
+                        <summary style="cursor: pointer; color: #60a5fa;">Show deleted items</summary>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                            <% submissions.filter(s => s.deleted).forEach(sub => { %>
+                                <li><%= sub.primaryArtist || sub.artistName || 'Unknown' %> - <%= sub.productTitle || sub.songTitle || 'Unknown' %> (ID: <%= sub.id %>)</li>
+                            <% }); %>
+                        </ul>
+                    </details>
+                <% } else { %>
+                    <p style="color: #ef4444;">✗ No deleted submissions in the data - check your backend query!</p>
+                <% } %>
+            </div>
+        </div>
+
         <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card">
