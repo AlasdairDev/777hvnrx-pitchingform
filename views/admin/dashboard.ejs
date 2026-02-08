@@ -1417,6 +1417,11 @@
                             ` : ''}
 
                             <div class="detail-row">
+                                <div class="detail-label">Imprint/Label</div>
+                                <div class="detail-value">${displayValue(submission.label)}</div>
+                            </div>
+
+                            <div class="detail-row">
                                 <div class="detail-label">UPC/EAN</div>
                                 <div class="detail-value">${displayValue(submission.upc)}</div>
                             </div>
@@ -1434,11 +1439,6 @@
                             <div class="detail-row">
                                 <div class="detail-label">Genre</div>
                                 <div class="detail-value">${displayValue(submission.genre)}</div>
-                            </div>
-
-                            <div class="detail-row">
-                                <div class="detail-label">Vibe/Mood</div>
-                                <div class="detail-value">${displayValue(submission.vibe)}</div>
                             </div>
                         </div>
 
@@ -1464,6 +1464,20 @@
                                 <div class="detail-label">Spotify Canvas Link</div>
                                 <div class="detail-value">${displayLink(submission.canvasLink)}</div>
                             </div>
+
+                            ${submission.promoInfo ? `
+                            <div class="detail-row">
+                                <div class="detail-label">Promo Info and Timeline</div>
+                                <div class="detail-value" style="white-space: pre-wrap;">${displayValue(submission.promoInfo)}</div>
+                            </div>
+                            ` : ''}
+
+                            ${submission.marketingCampaigns ? `
+                            <div class="detail-row">
+                                <div class="detail-label">Marketing Campaigns</div>
+                                <div class="detail-value" style="white-space: pre-wrap;">${displayValue(submission.marketingCampaigns)}</div>
+                            </div>
+                            ` : ''}
 
                             <div class="detail-row">
                                 <div class="detail-label">Suggested Compilations</div>
