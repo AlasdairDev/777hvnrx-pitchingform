@@ -102,14 +102,7 @@ router.get('/admins',
     adminController.showAdminManagement
 );
 
-// Create admin form
-router.get('/admins/create',
-    adminController.requireAuth,
-    adminController.requirePermission('manage_admins'),
-    adminController.showCreateAdmin
-);
-
-// Create admin handler
+// Create admin handler (form is now a modal in admin management page)
 router.post('/admins/create',
     adminController.requireAuth,
     adminController.requirePermission('manage_admins'),
