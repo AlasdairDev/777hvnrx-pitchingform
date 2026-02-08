@@ -118,19 +118,28 @@ exports.showDashboard = (req, res) => {
     console.log('=== SHOW DASHBOARD ===');
     console.log('Admin:', req.admin ? req.admin.username : 'None');
     
-    const view = req.query.view || 'active';
+    const view = req.query.view || 'all';
     const search = req.query.search || '';
     const filterGenre = req.query.genre || '';
     const filterStatus = req.query.status || '';
     
     let submissions;
     
+    // Get submissions based on view
     if (view === 'archived') {
         submissions = Submission.getArchived();
     } else if (view === 'deleted') {
         submissions = Submission.getDeleted();
     } else if (view === 'all') {
         submissions = Submission.getAll();
+    } else if (view === 'pending') {
+        submissions = Submission.getActive().filter(s => !s.status || s.status === 'pending');
+    } else if (view === 'reviewed') {
+        submissions = Submission.getActive().filter(s => s.status === 'reviewed');
+    } else if (view === 'approved') {
+        submissions = Submission.getActive().filter(s => s.status === 'approved');
+    } else if (view === 'rejected') {
+        submissions = Submission.getActive().filter(s => s.status === 'rejected');
     } else {
         submissions = Submission.getActive();
     }
@@ -154,6 +163,7 @@ exports.showDashboard = (req, res) => {
         stats,
         recentLogs,
         admin: req.admin,
+        username: req.session.username || req.admin.username,
         currentView: view,
         search,
         filterGenre,
