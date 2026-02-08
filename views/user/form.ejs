@@ -12,36 +12,44 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #1a1a24;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            background: #0a0a0f;
             color: #e4e4e7;
             min-height: 100vh;
-            padding: 3rem 1.5rem;
+            padding: 2rem 1rem;
             line-height: 1.6;
         }
 
         .container {
-            max-width: 750px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
+        /* Header Section */
         header {
             margin-bottom: 3rem;
             position: relative;
+            text-align: center;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #27272a;
         }
 
         .logo {
-            font-size: 1.75rem;
-            font-weight: 600;
-            color: #f4f4f5;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
             margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .tagline {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: #71717a;
-            margin-bottom: 2rem;
+            margin-bottom: 0;
         }
 
         /* Hidden Admin Button */
@@ -49,14 +57,14 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             background: transparent;
             border: 1px solid transparent;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -66,22 +74,26 @@
         }
 
         .admin-btn:hover {
-            opacity: 0.6;
-            border-color: #27272a;
+            opacity: 0.7;
+            border-color: #3f3f46;
+            background: #18181b;
         }
 
+        /* Intro Box */
         .intro-box {
-            background: #232332;
-            border: 1px solid #343444;
-            border-radius: 8px;
-            padding: 1.25rem;
-            margin-bottom: 2.5rem;
-            font-size: 0.9rem;
+            background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+            border: 1px solid #3f3f46;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
         }
 
         .intro-box p {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             color: #a1a1aa;
+            line-height: 1.7;
         }
 
         .intro-box p:last-child {
@@ -89,28 +101,41 @@
         }
 
         .intro-box strong {
-            color: #d4d4d8;
+            color: #e4e4e7;
+            font-weight: 600;
         }
 
         .required {
-            color: #e11d48;
+            color: #f87171;
+            font-weight: 600;
         }
 
+        /* Form Sections */
         .form-section {
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-section:hover {
+            border-color: #3f3f46;
         }
 
         .section-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #f4f4f5;
-            margin-bottom: 1.25rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
             padding-bottom: 0.75rem;
-            border-bottom: 1px solid #27272a;
+            border-bottom: 2px solid #3f3f46;
+            letter-spacing: -0.02em;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
         }
 
         .form-group:last-child {
@@ -119,34 +144,42 @@
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #d4d4d8;
-            font-size: 0.9rem;
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: #e4e4e7;
+            font-size: 0.95rem;
         }
 
+        /* Input Styles */
         input[type="text"],
         input[type="url"],
         input[type="date"],
         select,
         textarea {
             width: 100%;
-            padding: 0.65rem 0.85rem;
-            background: #232332;
-            border: 1px solid #343444;
-            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            background: #0a0a0f;
+            border: 2px solid #27272a;
+            border-radius: 8px;
             color: #e4e4e7;
             font-size: 0.95rem;
             font-family: inherit;
-            transition: border-color 0.2s, background-color 0.2s;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        input:hover,
+        select:hover,
+        textarea:hover {
+            border-color: #3f3f46;
         }
 
         input:focus,
         select:focus,
         textarea:focus {
-            outline: none;
             border-color: #52525b;
-            background: #2a2a3a;
+            background: #18181b;
+            box-shadow: 0 0 0 3px rgba(82, 82, 91, 0.1);
         }
 
         input::placeholder,
@@ -155,121 +188,152 @@
         }
 
         textarea {
-            min-height: 100px;
+            min-height: 120px;
             resize: vertical;
+            line-height: 1.6;
         }
 
         select {
             cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            padding-right: 2.5rem;
         }
 
-        /* Fix dropdown options visibility */
         select option {
-            background: #232332;
+            background: #18181b;
             color: #e4e4e7;
-            padding: 0.5rem;
+            padding: 0.75rem;
         }
 
-        select option:checked,
-        select option:hover {
-            background: #343444;
-            color: #f4f4f5;
+        select option:checked {
+            background: #27272a;
         }
 
-        /* Style the first option (placeholder) differently */
         select option:first-child {
             color: #71717a;
         }
 
+        /* Helper Text */
         .helper-text {
-            margin-top: 0.4rem;
-            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
             color: #71717a;
+            line-height: 1.5;
         }
 
         .char-count {
             color: #a1a1aa;
+            font-weight: 500;
         }
 
+        /* Radio Group */
         .radio-group {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 0.75rem;
-            margin-top: 0.5rem;
+            margin-top: 0.75rem;
         }
 
         .radio-option {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
-            padding: 0.65rem 1rem;
-            background: #232332;
-            border: 1px solid #343444;
-            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            background: #0a0a0f;
+            border: 2px solid #27272a;
+            border-radius: 8px;
             cursor: pointer;
-            transition: border-color 0.2s;
-            flex: 1;
-            font-size: 0.9rem;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+            font-weight: 500;
         }
 
         .radio-option:hover {
-            border-color: #52525b;
+            border-color: #3f3f46;
+            background: #18181b;
         }
 
         .radio-option input[type="radio"] {
             width: auto;
             margin: 0;
             cursor: pointer;
-            accent-color: #f4f4f5;
+            accent-color: #71717a;
         }
 
+        .radio-option input[type="radio"]:checked + span {
+            color: #ffffff;
+        }
+
+        .radio-option:has(input:checked) {
+            border-color: #52525b;
+            background: #18181b;
+        }
+
+        /* Submit Section */
         .submit-section {
+            margin-top: 3rem;
             text-align: center;
-            margin: 3rem 0 2rem;
         }
 
         button[type="submit"] {
-            padding: 0.85rem 2.5rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            background: #f4f4f5;
-            color: #0f0f1a;
-            border: none;
-            border-radius: 6px;
+            background: linear-gradient(135deg, #3f3f46 0%, #27272a 100%);
+            color: #ffffff;
+            padding: 1rem 3rem;
+            border: 2px solid #52525b;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: all 0.3s;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
         }
 
         button[type="submit"]:hover {
-            background: #e4e4e7;
+            background: linear-gradient(135deg, #52525b 0%, #3f3f46 100%);
+            border-color: #71717a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.4), 0 4px 6px -1px rgba(0, 0, 0, 0.3);
         }
 
         button[type="submit"]:active {
-            transform: scale(0.98);
+            transform: translateY(0);
         }
 
         button[type="submit"]:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
+        /* Footer */
         footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #27272a;
             text-align: center;
-            padding: 2rem 0 1rem;
-            color: #52525b;
-            font-size: 0.85rem;
+            color: #71717a;
+            font-size: 0.9rem;
         }
 
+        /* Loading Overlay */
         .loading {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(26, 26, 36, 0.95);
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.95);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
         }
 
         .loading.active {
@@ -277,30 +341,87 @@
         }
 
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #343444;
-            border-top: 2px solid #f4f4f5;
+            width: 50px;
+            height: 50px;
+            border: 4px solid #27272a;
+            border-top-color: #71717a;
             border-radius: 50%;
-            animation: spin 0.7s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
-        @media (max-width: 768px) {
+        /* Validation Styles */
+        input:invalid:not(:placeholder-shown),
+        select:invalid:not(:placeholder-shown),
+        textarea:invalid:not(:placeholder-shown) {
+            border-color: #dc2626;
+        }
+
+        input:valid:not(:placeholder-shown),
+        select:valid:not(:placeholder-shown),
+        textarea:valid:not(:placeholder-shown) {
+            border-color: #16a34a;
+        }
+
+        /* Warning Alert */
+        .warning-alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #dc2626;
+            color: #fca5a5;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-top: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .warning-alert.show {
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
             body {
-                padding: 2rem 1rem;
+                padding: 1.5rem 1rem;
+            }
+
+            .container {
+                padding: 0 0.5rem;
             }
 
             .logo {
                 font-size: 1.5rem;
             }
 
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+            }
+
             .radio-group {
-                flex-direction: column;
+                grid-template-columns: 1fr;
+            }
+
+            button[type="submit"] {
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .intro-box {
+                padding: 1.25rem;
+            }
+
+            .form-section {
+                padding: 1.25rem;
             }
         }
     </style>
@@ -308,46 +429,48 @@
 <body>
     <div class="container">
         <header>
-            <a href="/admin/login" class="admin-btn" title="Admin Login">🔐</a>
-            <h1 class="logo">777heaven Records</h1>
-            <p class="tagline">Pitching Portal</p>
-            
-            <div class="intro-box">
-                <p>Submit your pitch <strong>at least 2-3 weeks before release</strong>. Fields marked with <span class="required">*</span> are required.</p>
-                <p><strong>IMPORTANT:</strong> Include complete artist info and high-quality images.</p>
-            </div>
+            <div class="logo">777heaven Records</div>
+            <div class="tagline">Artist Pitch Submission</div>
+            <a href="/admin" class="admin-btn">⚙</a>
         </header>
 
-        <form action="/submit" method="POST" id="submission-form">
+        <div class="intro-box">
+            <p><strong>Before you submit:</strong> Please ensure your release is distributed through ONErpm and scheduled for release. We need <strong>at least 2 weeks lead time</strong> for playlist pitching and promotional planning.</p>
+            <p>Fields marked with <span class="required">*</span> are required.</p>
+        </div>
+
+        <form id="submission-form" method="POST" action="/submit">
             <!-- Artist Information -->
             <div class="form-section">
                 <div class="section-title">Artist Information</div>
-                
+
                 <div class="form-group">
-                    <label for="primaryArtist">Primary Artist(s) <span class="required">*</span></label>
-                    <input type="text" id="primaryArtist" name="primaryArtist" required autocomplete="name">
+                    <label for="primaryArtist">Primary Artist Name <span class="required">*</span></label>
+                    <input type="text" id="primaryArtist" name="primaryArtist" required placeholder="Enter your artist name">
                 </div>
 
                 <div class="form-group">
-                    <label for="featuringArtist">Featuring Artist(s)</label>
-                    <input type="text" id="featuringArtist" name="featuringArtist" autocomplete="off">
+                    <label for="featuredArtists">Featured Artists</label>
+                    <input type="text" id="featuredArtists" name="featuredArtists" placeholder="Artist 1, Artist 2 (if applicable)">
+                    <div class="helper-text">Comma-separated list of featured artists</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="artistImages">Artist Image(s) Link <span class="required">*</span></label>
-                    <input type="url" id="artistImages" name="artistImages" required placeholder="https://drive.google.com/...">
-                    <div class="helper-text">Upload high-resolution photo with plain background, preferably square format. Paste Google Drive folder link.</div>
+                    <label for="email">Contact Email <span class="required">*</span></label>
+                    <input type="text" id="email" name="email" required placeholder="your.email@example.com">
                 </div>
 
                 <div class="form-group">
-                    <label for="artistBio">Artist Bio <span class="required">*</span></label>
-                    <textarea id="artistBio" name="artistBio" required placeholder="Concise introduction highlighting background, musical style, and notable achievements..." maxlength="1000"></textarea>
-                    <div class="helper-text"><span class="char-count" data-target="artistBio">0</span> / 1000 characters</div>
+                    <label for="spotifyLink">Spotify Artist Link <span class="required">*</span></label>
+                    <input type="url" id="spotifyLink" name="spotifyLink" required placeholder="https://open.spotify.com/artist/...">
+                    <div class="helper-text">Your Spotify artist profile URL</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="socials">Social Media Links <span class="required">*</span></label>
-                    <textarea id="socials" name="socials" required placeholder="Instagram: https://...&#10;Facebook: https://...&#10;TikTok: https://..."></textarea>
+                    <label for="socialLinks">Social Media Links</label>
+                    <textarea id="socialLinks" name="socialLinks" placeholder="Instagram: https://instagram.com/yourhandle
+TikTok: https://tiktok.com/@yourhandle
+YouTube: https://youtube.com/@yourchannel"></textarea>
                     <div class="helper-text">One link per line</div>
                 </div>
             </div>
@@ -358,7 +481,7 @@
 
                 <div class="form-group">
                     <label for="productTitle">Product Title <span class="required">*</span></label>
-                    <input type="text" id="productTitle" name="productTitle" required>
+                    <input type="text" id="productTitle" name="productTitle" required placeholder="Enter your track or album title">
                 </div>
 
                 <div class="form-group">
@@ -373,8 +496,8 @@
 
                 <div class="form-group" id="focusTrackGroup" style="display: none;">
                     <label for="focusTrack">Focus Track</label>
-                    <input type="text" id="focusTrack" name="focusTrack">
-                    <div class="helper-text">Required for EP or Album</div>
+                    <input type="text" id="focusTrack" name="focusTrack" placeholder="Enter the main single from your EP/Album">
+                    <div class="helper-text">Required for EP or Album - the track you want to push</div>
                 </div>
 
                 <div class="form-group">
@@ -392,7 +515,7 @@
                 <div class="form-group">
                     <label for="releaseDate">Release Date <span class="required">*</span></label>
                     <input type="date" id="releaseDate" name="releaseDate" required>
-                    <div class="helper-text" id="release-date-warning" style="display: none; color: #ef4444; font-weight: 600;"></div>
+                    <div class="warning-alert" id="release-date-warning"></div>
                 </div>
 
                 <div class="form-group">
@@ -447,13 +570,13 @@
                 <div class="form-group">
                     <label for="keywords">Keywords <span class="required">*</span></label>
                     <input type="text" id="keywords" name="keywords" required placeholder="heartbreak, yearning, moving-on, hugot">
-                    <div class="helper-text">Comma-separated keywords</div>
+                    <div class="helper-text">Comma-separated keywords for categorization</div>
                 </div>
 
                 <div class="form-group">
                     <label for="canvasLink">Spotify Canvas Link</label>
                     <input type="url" id="canvasLink" name="canvasLink" placeholder="https://drive.google.com/...">
-                    <div class="helper-text">Google Drive link to your Spotify Canvas (optional)</div>
+                    <div class="helper-text">Google Drive link to your Spotify Canvas video (optional)</div>
                 </div>
             </div>
 
@@ -473,7 +596,7 @@
                             <span>No</span>
                         </label>
                     </div>
-                    <div class="helper-text">Apple Music requires this information</div>
+                    <div class="helper-text">Apple Music spatial audio requirement</div>
                 </div>
 
                 <div class="form-group">
@@ -514,6 +637,16 @@
             if (counter) {
                 textarea.addEventListener('input', () => {
                     counter.textContent = textarea.value.length;
+                    
+                    // Visual feedback on character limit
+                    const percentage = (textarea.value.length / textarea.maxLength) * 100;
+                    if (percentage > 90) {
+                        counter.style.color = '#fca5a5';
+                    } else if (percentage > 75) {
+                        counter.style.color = '#fcd34d';
+                    } else {
+                        counter.style.color = '#a1a1aa';
+                    }
                 });
             }
         });
@@ -530,40 +663,65 @@
             } else {
                 focusTrackGroup.style.display = 'none';
                 focusTrackInput.required = false;
+                focusTrackInput.value = '';
             }
         });
 
-        // Release date validation
+        // Release date validation with enhanced warning
         const releaseDateInput = document.getElementById('releaseDate');
         const releaseDateWarning = document.getElementById('release-date-warning');
         
         releaseDateInput.addEventListener('change', () => {
             const selectedDate = new Date(releaseDateInput.value);
             const today = new Date();
+            today.setHours(0, 0, 0, 0);
             const twoWeeksFromNow = new Date(today.getTime() + (14 * 24 * 60 * 60 * 1000));
             
             if (selectedDate < twoWeeksFromNow) {
-                releaseDateWarning.textContent = 'Warning: Less than 2 weeks notice. Priority consideration may be limited.';
-                releaseDateWarning.style.display = 'block';
+                releaseDateWarning.textContent = '⚠ Warning: Less than 2 weeks notice. Priority consideration and playlist placement may be limited.';
+                releaseDateWarning.classList.add('show');
             } else {
-                releaseDateWarning.style.display = 'none';
+                releaseDateWarning.classList.remove('show');
             }
         });
 
-        // Form submission
+        // Form submission with loading state
         const form = document.getElementById('submission-form');
         const submitBtn = document.getElementById('submit-btn');
         const loadingOverlay = document.getElementById('loadingOverlay');
         
-        form.addEventListener('submit', () => {
-            submitBtn.textContent = 'Submitting...';
-            submitBtn.disabled = true;
-            loadingOverlay.classList.add('active');
+        form.addEventListener('submit', (e) => {
+            // Validate all required fields
+            const requiredInputs = form.querySelectorAll('[required]');
+            let allValid = true;
+            
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    allValid = false;
+                    input.focus();
+                }
+            });
+            
+            if (allValid) {
+                submitBtn.textContent = 'Submitting...';
+                submitBtn.disabled = true;
+                loadingOverlay.classList.add('active');
+            }
         });
 
         // Set minimum date to today
         const today = new Date().toISOString().split('T')[0];
         releaseDateInput.setAttribute('min', today);
+
+        // Add smooth scroll to first error
+        form.addEventListener('invalid', (e) => {
+            e.preventDefault();
+            const firstInvalid = form.querySelector(':invalid');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstInvalid.focus();
+            }
+        }, true);
     </script>
 </body>
 </html>
