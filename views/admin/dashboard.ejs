@@ -3,103 +3,536 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - 777heaven Records Admin</title>
-    <link rel="stylesheet" href="/css/admin.css">
+    <title>Admin Dashboard - 777 Heaven Records</title>
+    <link rel="stylesheet" href="/admin.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e4e4e7;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+
+        .role-badge {
+            padding: 0.25rem 0.75rem;
+            background: rgba(118, 75, 162, 0.2);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e4e4e7;
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.8);
+            color: white;
+        }
+
+        .btn-success {
+            background: rgba(34, 197, 94, 0.8);
+            color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #a1a1aa;
+            margin-top: 0.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: #a1a1aa;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            text-decoration: none;
+        }
+
+        .tab.active {
+            color: #667eea;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .toolbar {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #e4e4e7;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        select {
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #e4e4e7;
+            cursor: pointer;
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .table-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tbody tr {
+            transition: all 0.3s;
+        }
+
+        tbody tr:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-pending { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .badge-reviewed { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .badge-approved { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .badge-rejected { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .message {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .message-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+
+        .message-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #a1a1aa;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="admin-container">
-        <header class="admin-header">
-            <div class="header-content">
-                <h1>777heaven Records - Admin Dashboard</h1>
-                <div class="header-actions">
-                    <span>Welcome, <%= username %></span>
-                    <a href="/admin/export" class="btn-export">Export All Data</a>
-                    <a href="/admin/logout" class="btn-logout">Logout</a>
-                </div>
+    <div class="header">
+        <h1>🎵 777 Heaven Records</h1>
+        <div class="user-info">
+            <div class="user-badge">
+                <span>👤 <%= admin.username %></span>
+                <span class="role-badge"><%= admin.role.replace('_', ' ') %></span>
             </div>
-        </header>
+            <a href="/admin/change-password" class="btn btn-secondary btn-sm">Change Password</a>
+            <% if (admin.role === 'super_admin') { %>
+                <a href="/admin/admins" class="btn btn-secondary btn-sm">Manage Admins</a>
+            <% } %>
+            <a href="/admin/logout" class="btn btn-danger btn-sm">Logout</a>
+        </div>
+    </div>
 
-        <div class="dashboard-content">
-            <!-- Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>Total Submissions</h3>
-                    <div class="stat-number"><%= stats.total %></div>
-                </div>
-                
-                <div class="stat-card">
-                    <h3>By Format</h3>
-                    <div class="stat-list">
-                        <% Object.entries(stats.byFormat).forEach(([format, count]) => { %>
-                            <div><span><%= format %>:</span> <strong><%= count %></strong></div>
-                        <% }); %>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <h3>Top Genres</h3>
-                    <div class="stat-list">
-                        <% Object.entries(stats.byGenre).slice(0, 5).forEach(([genre, count]) => { %>
-                            <div><span><%= genre %>:</span> <strong><%= count %></strong></div>
-                        <% }); %>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <h3>Top Vibes</h3>
-                    <div class="stat-list">
-                        <% Object.entries(stats.byVibe).slice(0, 5).forEach(([vibe, count]) => { %>
-                            <div><span><%= vibe %>:</span> <strong><%= count %></strong></div>
-                        <% }); %>
-                    </div>
-                </div>
+    <div class="container">
+        <% if (locals.message) { %>
+            <div class="message message-<%= message.type %>">
+                <%= message.text %>
             </div>
+        <% } %>
 
-            <!-- Submissions Table -->
-            <div class="submissions-section">
-                <h2>All Submissions (<%= submissions.length %>)</h2>
-                
-                <% if (submissions.length === 0) { %>
-                    <p class="no-data">No submissions yet.</p>
-                <% } else { %>
-                    <table class="submissions-table">
+        <!-- Stats Dashboard -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.total %></div>
+                <div class="stat-label">Total Submissions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.active %></div>
+                <div class="stat-label">Active</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.archived %></div>
+                <div class="stat-label">Archived</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= stats.deleted %></div>
+                <div class="stat-label">Trash</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <a href="/admin/dashboard?view=active" class="tab <%= currentView === 'active' ? 'active' : '' %>">
+                Active (<%= stats.active %>)
+            </a>
+            <a href="/admin/dashboard?view=archived" class="tab <%= currentView === 'archived' ? 'active' : '' %>">
+                Archived (<%= stats.archived %>)
+            </a>
+            <a href="/admin/dashboard?view=deleted" class="tab <%= currentView === 'deleted' ? 'active' : '' %>">
+                Trash (<%= stats.deleted %>)
+            </a>
+            <a href="/admin/dashboard?view=all" class="tab <%= currentView === 'all' ? 'active' : '' %>">
+                All (<%= stats.total %>)
+            </a>
+            <a href="/admin/audit-logs" class="tab">
+                📋 Audit Logs
+            </a>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <form method="GET" action="/admin/dashboard" class="search-bar">
+                <input type="hidden" name="view" value="<%= currentView %>">
+                <input 
+                    type="text" 
+                    name="search" 
+                    placeholder="Search by artist, song, email..." 
+                    class="search-input"
+                    value="<%= search %>"
+                >
+                <select name="genre">
+                    <option value="">All Genres</option>
+                    <option value="Indie Rock" <%= filterGenre === 'Indie Rock' ? 'selected' : '' %>>Indie Rock</option>
+                    <option value="Dream Pop" <%= filterGenre === 'Dream Pop' ? 'selected' : '' %>>Dream Pop</option>
+                    <option value="Lo-Fi" <%= filterGenre === 'Lo-Fi' ? 'selected' : '' %>>Lo-Fi</option>
+                    <option value="Folk" <%= filterGenre === 'Folk' ? 'selected' : '' %>>Folk</option>
+                    <option value="Electronic" <%= filterGenre === 'Electronic' ? 'selected' : '' %>>Electronic</option>
+                </select>
+                <select name="status">
+                    <option value="">All Status</option>
+                    <option value="pending" <%= filterStatus === 'pending' ? 'selected' : '' %>>Pending</option>
+                    <option value="reviewed" <%= filterStatus === 'reviewed' ? 'selected' : '' %>>Reviewed</option>
+                    <option value="approved" <%= filterStatus === 'approved' ? 'selected' : '' %>>Approved</option>
+                    <option value="rejected" <%= filterStatus === 'rejected' ? 'selected' : '' %>>Rejected</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+
+            <div class="bulk-actions">
+                <button onclick="selectAll()" class="btn btn-secondary btn-sm">Select All</button>
+                <button onclick="deselectAll()" class="btn btn-secondary btn-sm">Deselect All</button>
+                <% if (currentView !== 'archived' && currentView !== 'deleted') { %>
+                    <button onclick="bulkArchive()" class="btn btn-secondary btn-sm">Archive Selected</button>
+                    <button onclick="bulkDelete()" class="btn btn-danger btn-sm">Delete Selected</button>
+                <% } %>
+                <a href="/admin/export?view=<%= currentView %>&format=json" class="btn btn-primary btn-sm">Export JSON</a>
+                <a href="/admin/export?view=<%= currentView %>&format=csv" class="btn btn-primary btn-sm">Export CSV</a>
+            </div>
+        </div>
+
+        <!-- Submissions Table -->
+        <div class="table-container">
+            <% if (submissions.length === 0) { %>
+                <div class="empty-state">
+                    <h3>No submissions found</h3>
+                    <p>There are no submissions in this view.</p>
+                </div>
+            <% } else { %>
+                <form id="bulkForm" method="POST" action="/admin/bulk-action">
+                    <input type="hidden" name="action" id="bulkAction" value="">
+                    <table>
                         <thead>
                             <tr>
-                                <th>Date</th>
+                                <th width="40"><input type="checkbox" id="selectAllCheckbox" onclick="toggleSelectAll()"></th>
                                 <th>Artist</th>
-                                <th>Product Title</th>
-                                <th>Format</th>
+                                <th>Song</th>
                                 <th>Genre</th>
-                                <th>Release Date</th>
-                                <th>Compilations</th>
+                                <th>Status</th>
+                                <th>Date</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% submissions.reverse().forEach(sub => { %>
+                            <% submissions.forEach(submission => { %>
                                 <tr>
-                                    <td><%= new Date(sub.timestamp).toLocaleDateString() %></td>
-                                    <td><%= sub.primaryArtist %></td>
-                                    <td><%= sub.productTitle %></td>
-                                    <td><span class="badge"><%= sub.format %></span></td>
-                                    <td><%= sub.genre %></td>
-                                    <td><%= new Date(sub.releaseDate).toLocaleDateString() %></td>
                                     <td>
-                                        <span class="compilation-count"><%= sub.compilations.length %> playlists</span>
+                                        <input type="checkbox" name="submissionIds[]" value="<%= submission.id %>" class="submission-checkbox">
                                     </td>
-                                    <td class="actions">
-                                        <a href="/admin/submission/<%= sub.id %>" class="btn-view">View</a>
-                                        <form action="/admin/submission/<%= sub.id %>/delete" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this submission?');">
-                                            <button type="submit" class="btn-delete">Delete</button>
-                                        </form>
+                                    <td><strong><%= submission.artistName %></strong></td>
+                                    <td><%= submission.songTitle %></td>
+                                    <td><%= submission.genre %></td>
+                                    <td>
+                                        <span class="badge badge-<%= submission.status || 'pending' %>">
+                                            <%= (submission.status || 'pending').toUpperCase() %>
+                                        </span>
+                                    </td>
+                                    <td><%= new Date(submission.timestamp).toLocaleDateString() %></td>
+                                    <td>
+                                        <div class="actions">
+                                            <a href="/admin/submission/<%= submission.id %>" class="btn btn-primary btn-sm">View</a>
+                                            
+                                            <% if (currentView === 'deleted') { %>
+                                                <form method="POST" action="/admin/submission/<%= submission.id %>/restore" style="display: inline;">
+                                                    <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                                </form>
+                                                <form method="POST" action="/admin/submission/<%= submission.id %>/permanent-delete" style="display: inline;" onsubmit="return confirm('Permanently delete? This cannot be undone!');">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete Forever</button>
+                                                </form>
+                                            <% } else if (submission.archived) { %>
+                                                <form method="POST" action="/admin/submission/<%= submission.id %>/unarchive" style="display: inline;">
+                                                    <button type="submit" class="btn btn-success btn-sm">Unarchive</button>
+                                                </form>
+                                            <% } else { %>
+                                                <form method="POST" action="/admin/submission/<%= submission.id %>/archive" style="display: inline;">
+                                                    <button type="submit" class="btn btn-secondary btn-sm">Archive</button>
+                                                </form>
+                                                <form method="POST" action="/admin/submission/<%= submission.id %>/delete" style="display: inline;">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                </form>
+                                            <% } %>
+                                        </div>
                                     </td>
                                 </tr>
-                            <% }); %>
+                            <% }) %>
                         </tbody>
                     </table>
-                <% } %>
-            </div>
+                </form>
+            <% } %>
         </div>
     </div>
+
+    <script>
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const checkboxes = document.querySelectorAll('.submission-checkbox');
+            checkboxes.forEach(cb => cb.checked = selectAllCheckbox.checked);
+        }
+
+        function selectAll() {
+            document.querySelectorAll('.submission-checkbox').forEach(cb => cb.checked = true);
+            document.getElementById('selectAllCheckbox').checked = true;
+        }
+
+        function deselectAll() {
+            document.querySelectorAll('.submission-checkbox').forEach(cb => cb.checked = false);
+            document.getElementById('selectAllCheckbox').checked = false;
+        }
+
+        function bulkArchive() {
+            if (confirm('Archive selected submissions?')) {
+                document.getElementById('bulkAction').value = 'archive';
+                document.getElementById('bulkForm').submit();
+            }
+        }
+
+        function bulkDelete() {
+            if (confirm('Move selected submissions to trash?')) {
+                document.getElementById('bulkAction').value = 'delete';
+                document.getElementById('bulkForm').submit();
+            }
+        }
+    </script>
 </body>
 </html>
