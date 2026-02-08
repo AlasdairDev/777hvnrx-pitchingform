@@ -4,7 +4,11 @@ const Submission = require('../models/Submission');
 // ==================== AUTHENTICATION ====================
 
 exports.showLogin = (req, res) => {
+    console.log('=== SHOW LOGIN ===');
+    console.log('Session authenticated:', req.session.isAuthenticated);
+    
     if (req.session.isAuthenticated) {
+        console.log('User already authenticated, redirecting to dashboard');
         return res.redirect('/admin/dashboard');
     }
     res.render('admin/login', { error: null });
@@ -13,23 +17,46 @@ exports.showLogin = (req, res) => {
 exports.login = async (req, res) => {
     const { username, password } = req.body;
     
+    console.log('=== LOGIN ATTEMPT ===');
+    console.log('Username:', username);
+    console.log('Password provided:', password ? 'Yes' : 'No');
+    
     try {
         const admin = await Admin.verify(username, password);
         
+        console.log('Admin verify result:', admin ? 'Found' : 'Not found');
+        
         if (admin) {
+            console.log('Admin details:', {
+                id: admin.id,
+                username: admin.username,
+                role: admin.role,
+                isActive: admin.isActive
+            });
+            
             req.session.isAuthenticated = true;
             req.session.adminId = admin.id;
             req.session.username = admin.username;
             req.session.role = admin.role;
+            
+            console.log('Session set:', {
+                isAuthenticated: req.session.isAuthenticated,
+                adminId: req.session.adminId,
+                username: req.session.username,
+                role: req.session.role
+            });
             
             req.session.save((err) => {
                 if (err) {
                     console.error('Session save error:', err);
                     return res.render('admin/login', { error: 'Session error. Please try again.' });
                 }
+                console.log('Session saved successfully');
+                console.log('Redirecting to /admin/dashboard');
                 res.redirect('/admin/dashboard');
             });
         } else {
+            console.log('Login failed: Invalid credentials or account disabled');
             res.render('admin/login', { error: 'Invalid credentials or account is disabled' });
         }
     } catch (error) {
@@ -48,18 +75,28 @@ exports.logout = (req, res) => {
 };
 
 exports.requireAuth = (req, res, next) => {
+    console.log('=== REQUIRE AUTH MIDDLEWARE ===');
+    console.log('Session authenticated:', req.session.isAuthenticated);
+    console.log('Session ID:', req.session.id);
+    console.log('Session:', req.session);
+    
     if (!req.session.isAuthenticated) {
+        console.log('Not authenticated, redirecting to login');
         return res.redirect('/admin/login');
     }
     
     // Attach admin info to request
     const admin = Admin.getAdminById(req.session.adminId);
+    console.log('Admin from session:', admin ? admin.username : 'Not found');
+    
     if (!admin || !admin.isActive) {
+        console.log('Admin not found or inactive, destroying session');
         req.session.destroy();
         return res.redirect('/admin/login');
     }
     
     req.admin = admin;
+    console.log('Auth successful, proceeding to route');
     next();
 };
 
@@ -78,6 +115,9 @@ exports.requirePermission = (action) => {
 // ==================== DASHBOARD ====================
 
 exports.showDashboard = (req, res) => {
+    console.log('=== SHOW DASHBOARD ===');
+    console.log('Admin:', req.admin ? req.admin.username : 'None');
+    
     const view = req.query.view || 'active';
     const search = req.query.search || '';
     const filterGenre = req.query.genre || '';
@@ -106,6 +146,8 @@ exports.showDashboard = (req, res) => {
     
     const stats = Submission.getStats();
     const recentLogs = Submission.getAuditLogs(10);
+    
+    console.log('Rendering dashboard with', submissions.length, 'submissions');
     
     res.render('admin/dashboard', { 
         submissions,
