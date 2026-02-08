@@ -7,7 +7,7 @@ const app = express();
 
 // Import controllers
 const userController = require('./controllers/userController');
-const adminController = require('./controllers/adminController');
+const adminController = require('./controllers/adminController.js.backup');
 
 // ==================== SECURITY CONFIGURATION ====================
 
