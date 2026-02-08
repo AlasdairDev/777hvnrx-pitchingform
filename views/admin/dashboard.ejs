@@ -811,11 +811,14 @@
         </div>
     </div>
 
+    <!-- Submission data for modal -->
+    <script type="application/json" id="submissionsData">
+        <%- JSON.stringify(submissions) %>
+    </script>
+
     <script>
         // Submission data for modal
-        /* eslint-disable */
-        const submissionsData = <%- JSON.stringify(submissions) %>;
-        /* eslint-enable */
+        const submissionsData = JSON.parse(document.getElementById('submissionsData').textContent);
 
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
