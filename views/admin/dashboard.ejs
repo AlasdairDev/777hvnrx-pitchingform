@@ -922,11 +922,11 @@
     </div>
 
     <!-- Modal -->
-    <div id="modalOverlay" class="modal-overlay" onclick="if(event.target === this) closeModal()">
+    <div id="modalOverlay" class="modal-overlay">
         <div class="modal">
             <div class="modal-header">
                 <h2>Submission Details</h2>
-                <button class="close-btn" onclick="closeModal()">×</button>
+                <button class="close-btn" id="modalCloseBtn">×</button>
             </div>
             <div class="modal-body" id="modalBody">
                 <!-- Content populated by JavaScript -->
@@ -984,6 +984,29 @@
                     if (submissionId) {
                         openModal(submissionId);
                     }
+                }
+            });
+
+            // Modal close handlers
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            const modalOverlay = document.getElementById('modalOverlay');
+            
+            if (modalCloseBtn) {
+                modalCloseBtn.addEventListener('click', closeModal);
+            }
+            
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', function(event) {
+                    if (event.target === modalOverlay) {
+                        closeModal();
+                    }
+                });
+            }
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeModal();
                 }
             });
         });
@@ -1217,27 +1240,34 @@
         // Modal functions
         function openModal(submissionId) {
             const submission = submissionsData.find(s => s.id === submissionId);
-            if (!submission) return;
+            if (!submission) {
+                console.error('Submission not found:', submissionId);
+                return;
+            }
 
+            console.log('Opening modal for submission:', submission);
             const modalBody = document.getElementById('modalBody');
             
+            // Helper function to safely display values
+            const displayValue = (value) => value || '<span style="color: #71717a;">Not provided</span>';
+            const displayLink = (value, placeholder = 'Not provided') => {
+                if (value) {
+                    return `<a href="${value}" target="_blank" rel="noopener noreferrer">${value}</a>`;
+                }
+                return `<span style="color: #71717a;">${placeholder}</span>`;
+            };
+
+            // Compilations
             let compilationsHtml = '';
             if (submission.compilations && submission.compilations.length > 0) {
                 compilationsHtml = submission.compilations.map(comp => 
                     `<span class="compilation-badge">${comp}</span>`
                 ).join('');
+            } else {
+                compilationsHtml = '<span style="color: #71717a;">None</span>';
             }
 
-            let keywordsHtml = '';
-            if (submission.keywords) {
-                keywordsHtml = `
-                    <div class="detail-row">
-                        <div class="detail-label">Keywords</div>
-                        <div class="detail-value">${submission.keywords}</div>
-                    </div>
-                `;
-            }
-
+            // Status info
             let statusInfo = '';
             if (submission.archived) {
                 statusInfo += `
@@ -1264,6 +1294,7 @@
                 `;
             }
 
+            // Actions
             let actionsHtml = '';
             if (!submission.deleted) {
                 if (submission.archived) {
@@ -1296,62 +1327,122 @@
             modalBody.innerHTML = `
                 <div class="modal-grid">
                     <div class="modal-card">
-                        <h3>Submission Details</h3>
+                        <h3>Artist Information</h3>
 
                         <div class="detail-row">
-                            <div class="detail-label">Artist Name</div>
-                            <div class="detail-value"><strong>${submission.artistName}</strong></div>
+                            <div class="detail-label">Primary Artist(s)</div>
+                            <div class="detail-value"><strong>${displayValue(submission.primaryArtist)}</strong></div>
                         </div>
 
                         <div class="detail-row">
-                            <div class="detail-label">Song Title</div>
-                            <div class="detail-value">${submission.songTitle}</div>
+                            <div class="detail-label">Featuring Artist(s)</div>
+                            <div class="detail-value">${displayValue(submission.featuringArtist)}</div>
                         </div>
 
                         <div class="detail-row">
-                            <div class="detail-label">Email</div>
-                            <div class="detail-value">${submission.email}</div>
+                            <div class="detail-label">Artist Image(s) Link</div>
+                            <div class="detail-value">${displayLink(submission.artistImages)}</div>
                         </div>
 
                         <div class="detail-row">
-                            <div class="detail-label">Genre</div>
-                            <div class="detail-value">${submission.genre}</div>
+                            <div class="detail-label">Artist Bio</div>
+                            <div class="detail-value" style="white-space: pre-wrap;">${displayValue(submission.artistBio)}</div>
                         </div>
 
                         <div class="detail-row">
-                            <div class="detail-label">Vibe</div>
-                            <div class="detail-value">${submission.vibe}</div>
+                            <div class="detail-label">Social Media Links</div>
+                            <div class="detail-value" style="white-space: pre-wrap;">${displayValue(submission.socials)}</div>
+                        </div>
+                    </div>
+
+                    <div class="modal-card">
+                        <h3>Release Details</h3>
+
+                        <div class="detail-row">
+                            <div class="detail-label">Product Title</div>
+                            <div class="detail-value"><strong>${displayValue(submission.productTitle)}</strong></div>
                         </div>
 
                         <div class="detail-row">
                             <div class="detail-label">Format</div>
-                            <div class="detail-value">${submission.format}</div>
+                            <div class="detail-value">${displayValue(submission.format)}</div>
+                        </div>
+
+                        ${submission.focusTrack ? `
+                        <div class="detail-row">
+                            <div class="detail-label">Focus Track</div>
+                            <div class="detail-value">${submission.focusTrack}</div>
+                        </div>
+                        ` : ''}
+
+                        <div class="detail-row">
+                            <div class="detail-label">UPC/EAN</div>
+                            <div class="detail-value">${displayValue(submission.upc)}</div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-label">Spotify URI</div>
+                            <div class="detail-value">${displayValue(submission.spotifyUri)}</div>
                         </div>
 
                         <div class="detail-row">
                             <div class="detail-label">Release Date</div>
-                            <div class="detail-value">${submission.releaseDate}</div>
+                            <div class="detail-value">${displayValue(submission.releaseDate)}</div>
                         </div>
 
                         <div class="detail-row">
-                            <div class="detail-label">Debut Release</div>
-                            <div class="detail-value">${submission.debutRelease}</div>
+                            <div class="detail-label">Genre</div>
+                            <div class="detail-value">${displayValue(submission.genre)}</div>
                         </div>
 
                         <div class="detail-row">
-                            <div class="detail-label">Spotify Link</div>
-                            <div class="detail-value">
-                                <a href="${submission.spotifyLink}" target="_blank">${submission.spotifyLink}</a>
-                            </div>
+                            <div class="detail-label">Vibe/Mood</div>
+                            <div class="detail-value">${displayValue(submission.vibe)}</div>
+                        </div>
+                    </div>
+
+                    <div class="modal-card">
+                        <h3>Content & Marketing</h3>
+
+                        <div class="detail-row">
+                            <div class="detail-label">Song Description</div>
+                            <div class="detail-value" style="white-space: pre-wrap;">${displayValue(submission.songDescription)}</div>
                         </div>
 
-                        ${keywordsHtml}
+                        <div class="detail-row">
+                            <div class="detail-label">Marketing Blurb</div>
+                            <div class="detail-value" style="white-space: pre-wrap;">${displayValue(submission.marketingBlurb)}</div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-label">Keywords</div>
+                            <div class="detail-value">${displayValue(submission.keywords)}</div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-label">Spotify Canvas Link</div>
+                            <div class="detail-value">${displayLink(submission.canvasLink)}</div>
+                        </div>
 
                         <div class="detail-row">
                             <div class="detail-label">Suggested Compilations</div>
                             <div class="compilations">
-                                ${compilationsHtml || '<span style="color: #71717a;">None</span>'}
+                                ${compilationsHtml}
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-card">
+                        <h3>Technical Information</h3>
+
+                        <div class="detail-row">
+                            <div class="detail-label">Dolby Atmos</div>
+                            <div class="detail-value">${displayValue(submission.dolbyAtmos)}</div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-label">Debut Release</div>
+                            <div class="detail-value">${displayValue(submission.debutRelease)}</div>
                         </div>
 
                         <div class="detail-row">
