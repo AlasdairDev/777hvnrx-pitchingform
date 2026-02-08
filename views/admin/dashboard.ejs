@@ -468,7 +468,7 @@
                     <span><%= admin.role.replace('_', ' ') %></span>
                 </div>
             </div>
-            <button class="burger-btn" onclick="toggleMenu(event)" id="burgerBtn">
+            <button class="burger-btn" id="burgerBtn">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -642,23 +642,39 @@
     </div>
 
     <script>
-        function toggleMenu(event) {
-            event.stopPropagation(); // Prevent click from bubbling to document
-            const burgerBtn = document.getElementById('burgerBtn');
-            const dropdownMenu = document.getElementById('dropdownMenu');
-            burgerBtn.classList.toggle('active');
-            dropdownMenu.classList.toggle('active');
-        }
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing burger menu...');
+            
             const burgerBtn = document.getElementById('burgerBtn');
             const dropdownMenu = document.getElementById('dropdownMenu');
             
-            // Check if click is outside both burger button and dropdown
-            if (!burgerBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                burgerBtn.classList.remove('active');
-                dropdownMenu.classList.remove('active');
+            console.log('Burger button:', burgerBtn);
+            console.log('Dropdown menu:', dropdownMenu);
+            
+            // Add click event listener to burger button
+            if (burgerBtn && dropdownMenu) {
+                burgerBtn.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    console.log('Burger clicked!');
+                    
+                    burgerBtn.classList.toggle('active');
+                    dropdownMenu.classList.toggle('active');
+                    
+                    console.log('Active class toggled. Burger:', burgerBtn.classList.contains('active'));
+                    console.log('Dropdown active:', dropdownMenu.classList.contains('active'));
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!burgerBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                        burgerBtn.classList.remove('active');
+                        dropdownMenu.classList.remove('active');
+                    }
+                });
+            } else {
+                console.error('Burger menu elements not found!');
             }
         });
 
