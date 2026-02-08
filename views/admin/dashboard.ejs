@@ -499,19 +499,27 @@
 
         .empty-state {
             text-align: center;
-            padding: 3rem 1rem;
-            color: #71717a;
+            padding: 3rem 2rem;
         }
 
         .empty-state h3 {
+            font-size: 1.25rem;
             margin-bottom: 0.5rem;
-            color: #a1a1aa;
-            font-weight: 500;
+            color: #e4e4e7;
         }
 
-        @media (max-width: 968px) {
+        .empty-state p {
+            color: #71717a;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
             .table-container {
                 overflow-x: auto;
+            }
+            
+            table {
+                min-width: 800px;
             }
         }
     </style>
@@ -532,17 +540,19 @@
                     <span><%= admin.role.replace('_', ' ') %></span>
                 </div>
             </div>
-            <button class="burger-btn" id="burgerBtn">
+            <button id="burgerBtn" class="burger-btn">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            <div class="dropdown-menu" id="dropdownMenu">
-                <a href="/admin/change-password">Change Password</a>
+            <div id="dropdownMenu" class="dropdown-menu">
+                <a href="/admin/dashboard">🏠 Dashboard</a>
                 <% if (admin.role === 'super_admin') { %>
-                    <a href="/admin/admins">Manage Admins</a>
+                    <a href="/admin/admins">👥 Admin Management</a>
                 <% } %>
-                <a href="/admin/logout" class="logout-btn">Logout</a>
+                <a href="/admin/audit-logs">📋 Audit Logs</a>
+                <a href="/admin/change-password">🔒 Change Password</a>
+                <button onclick="handleLogout()" class="logout-btn">🚪 Logout</button>
             </div>
         </div>
     </div>
@@ -710,27 +720,18 @@
             // Add fade-in animation on page load
             document.body.classList.add('fade-in');
             
-            console.log('DOM loaded, initializing burger menu...');
-            
             const burgerBtn = document.getElementById('burgerBtn');
             const dropdownMenu = document.getElementById('dropdownMenu');
             const loadingOverlay = document.getElementById('loadingOverlay');
-            
-            console.log('Burger button:', burgerBtn);
-            console.log('Dropdown menu:', dropdownMenu);
             
             // Add click event listener to burger button
             if (burgerBtn && dropdownMenu) {
                 burgerBtn.addEventListener('click', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    console.log('Burger clicked!');
                     
                     burgerBtn.classList.toggle('active');
                     dropdownMenu.classList.toggle('active');
-                    
-                    console.log('Active class toggled. Burger:', burgerBtn.classList.contains('active'));
-                    console.log('Dropdown active:', dropdownMenu.classList.contains('active'));
                 });
                 
                 // Close menu when clicking outside
@@ -740,8 +741,6 @@
                         dropdownMenu.classList.remove('active');
                     }
                 });
-            } else {
-                console.error('Burger menu elements not found!');
             }
 
             // Smooth page transitions for all navigation links - ULTRA FAST
@@ -799,6 +798,14 @@
                 });
             });
         });
+
+        function handleLogout() {
+            document.getElementById('loadingOverlay').classList.add('active');
+            document.body.classList.add('page-transitioning');
+            setTimeout(function() {
+                window.location.href = '/admin/logout';
+            }, 80);
+        }
 
         function toggleSelectAll() {
             const selectAllCheckbox = document.getElementById('selectAllCheckbox');
