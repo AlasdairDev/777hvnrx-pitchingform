@@ -3,13 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - 777heaven Records</title>
-    <link rel="stylesheet" href="/css/admin.css">
+    <title>Admin Login - 777 Heaven Records</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #1a1a24;
+            color: #e4e4e7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        /* Page Transition Animations */
+        body {
+            opacity: 1;
+            transition: opacity 0.08s;
+        }
+
+        body.page-transitioning {
+            opacity: 0;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #1a1a24;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.08s;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #343444;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.15s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .login-box {
+            background: #232332;
+            border: 1px solid #343444;
+            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .login-box h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f4f4f5;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .login-box h2 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #a1a1aa;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #d4d4d8;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: #1a1a24;
+            border: 1px solid #343444;
+            border-radius: 6px;
+            color: #e4e4e7;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #71717a;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        button[type="submit"]:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .login-note {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #343444;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #71717a;
+        }
+
+        .login-note strong {
+            color: #a1a1aa;
+            font-weight: 600;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0.75rem;
+            background: #1a1a24;
+            border: 1px solid #343444;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #71717a;
+        }
+
+        .security-badge::before {
+            content: "🔒";
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 2.5rem 1.75rem;
+            }
+
+            .login-box h1 {
+                font-size: 1.3rem;
+            }
+
+            .logo-icon {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Subtle background pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
     <div class="login-container">
         <div class="login-box">
-            <h1>777heaven Records</h1>
+            <div class="logo-section">
+                <span class="logo-icon">🎵</span>
+            </div>
+            
+            <h1>777 Heaven Records</h1>
             <h2>Admin Portal</h2>
             
             <% if (error) { %>
@@ -19,19 +270,61 @@
             <form action="/admin/login" method="POST">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required autofocus autocomplete="username">
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        required 
+                        autofocus 
+                        autocomplete="username"
+                        placeholder="Enter your username"
+                    >
                 </div>
                 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required 
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                    >
                 </div>
                 
-                <button type="submit">Login</button>
+                <button type="submit">Sign In</button>
             </form>
             
-            <p class="login-note">Default credentials: admin / Admin@777!</p>
+            <div class="security-badge">
+                Secure Admin Access
+            </div>
+            
+            <p class="login-note">
+                <strong>Default credentials:</strong><br>
+                Username: admin / Password: Admin@777!
+            </p>
         </div>
     </div>
+
+    <script>
+        // Add fade-in animation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.add('fade-in');
+
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            // Handle form submission with smooth transition
+            document.querySelector('form').addEventListener('submit', function(e) {
+                loadingOverlay.classList.add('active');
+                document.body.classList.add('page-transitioning');
+            });
+
+            // Prevent form resubmission on page refresh
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+        });
+    </script>
 </body>
 </html>
