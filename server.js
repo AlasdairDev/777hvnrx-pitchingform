@@ -5,6 +5,10 @@ const path = require('path');
 
 const app = express();
 
+// ==================== TRUST PROXY (CRITICAL FOR RENDER) ====================
+// Render uses a reverse proxy, so we need to trust it
+app.set('trust proxy', 1);
+
 // Import controllers
 const userController = require('./controllers/userController');
 const adminController = require('./controllers/adminController');
@@ -54,19 +58,25 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Session configuration with enhanced security - FIXED VERSION
+// ==================== SESSION CONFIGURATION (RENDER-OPTIMIZED) ====================
+
+// Detect if we're in production (Render sets NODE_ENV)
+const isProduction = process.env.NODE_ENV === 'production';
+
 app.use(session({
     secret: process.env.SESSION_SECRET || '777heaven-secret-key-CHANGE-THIS-IN-PRODUCTION',
     resave: false,
     saveUninitialized: false,
     name: 'admin.sid',
     cookie: { 
-        secure: false, // Set to true only if using HTTPS
+        secure: isProduction, // Use HTTPS in production (Render), HTTP in dev
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: 'lax' // Changed from 'strict' to 'lax' - this fixes the redirect issue!
+        sameSite: 'lax', // Changed from 'strict' to 'lax' for redirect compatibility
+        domain: isProduction ? undefined : undefined // Let Express handle domain automatically
     },
-    rolling: true
+    rolling: true,
+    proxy: isProduction // Trust proxy in production (required for Render)
 }));
 
 // Flash message middleware
@@ -185,6 +195,7 @@ const server = app.listen(PORT, () => {
     console.log('   4. Run "npm audit" regularly');
     console.log('='.repeat(60));
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`Production Mode: ${isProduction ? 'YES (HTTPS enabled)' : 'NO (Development)'}`);
     console.log('='.repeat(60) + '\n');
 });
 
