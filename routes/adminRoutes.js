@@ -29,11 +29,9 @@ router.get('/dashboard',
 
 // ==================== SUBMISSION ROUTES ====================
 
-// View submission details
-router.get('/submission/:id', 
-    adminController.requireAuth,
-    adminController.viewSubmission
-);
+// NOTE: The GET route for /submission/:id has been removed
+// Submission details are now displayed in a modal popup within the dashboard
+// All POST routes below are still needed for the modal's form submissions
 
 // Update submission status
 router.post('/submission/:id/status',
