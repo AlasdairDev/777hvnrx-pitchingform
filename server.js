@@ -7,7 +7,7 @@ const app = express();
 
 // Import controllers
 const userController = require('./controllers/userController');
-const adminController = require('./controllers/adminController.js.backup');
+const adminController = require('./controllers/adminController');
 
 // ==================== SECURITY CONFIGURATION ====================
 
@@ -54,19 +54,19 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Session configuration with enhanced security
+// Session configuration with enhanced security - FIXED VERSION
 app.use(session({
     secret: process.env.SESSION_SECRET || '777heaven-secret-key-CHANGE-THIS-IN-PRODUCTION',
     resave: false,
     saveUninitialized: false,
-    name: 'admin.sid', // Don't use default 'connect.sid'
+    name: 'admin.sid',
     cookie: { 
-        secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-        httpOnly: true, // Prevent XSS attacks
+        secure: false, // Set to true only if using HTTPS
+        httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        sameSite: 'strict' // CSRF protection
+        sameSite: 'lax' // Changed from 'strict' to 'lax' - this fixes the redirect issue!
     },
-    rolling: true // Reset expiration on each request
+    rolling: true
 }));
 
 // Flash message middleware
@@ -97,7 +97,6 @@ const loginLimiter = rateLimit({
             error: 'Too many login attempts from this IP. Please try again in 15 minutes.'
         });
     },
-    // Skip rate limiting for successful logins
     skipSuccessfulRequests: true
 });
 
