@@ -694,7 +694,7 @@
     <div id="createAdminModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>👤 Create New Admin</h2>
+                <h2>Create New Admin</h2>
                 <button type="button" class="modal-close" id="modalCloseBtn">&times;</button>
             </div>
 
@@ -780,7 +780,7 @@
     </div>
 
     <div class="header">
-        <h1>🎵 777 Heaven Records</h1>
+        <h1>777heaven Admin Portal</h1>
         <div class="burger-menu">
             <div class="user-display">
                 <div class="user-icon"><%= admin.username.charAt(0).toUpperCase() %></div>
@@ -795,13 +795,13 @@
                 <span></span>
             </button>
             <div id="dropdownMenu" class="dropdown-menu">
-                <a href="/admin/dashboard">🏠 Dashboard</a>
+                <a href="/admin/dashboard">Dashboard</a>
                 <% if (admin.role === 'super_admin') { %>
-                    <a href="/admin/admins">👥 Admin Management</a>
+                    <a href="/admin/admins">Admin Management</a>
                 <% } %>
-                <a href="/admin/audit-logs">📋 Audit Logs</a>
-                <a href="/admin/change-password">🔒 Change Password</a>
-                <button onclick="handleLogout()" class="logout-btn">🚪 Logout</button>
+                <a href="/admin/audit-logs">Audit Logs</a>
+                <a href="/admin/change-password">Change Password</a>
+                <button onclick="handleLogout()" class="logout-btn">Logout</button>
             </div>
         </div>
     </div>
@@ -841,7 +841,7 @@
 
         <!-- Toolbar -->
         <div class="toolbar">
-            <h2>👥 Admin Accounts</h2>
+            <h2>Admin Accounts</h2>
             <% if (admin.role === 'super_admin') { %>
                 <button type="button" id="createAdminBtn" class="btn btn-primary">+ Create New Admin</button>
             <% } %>
