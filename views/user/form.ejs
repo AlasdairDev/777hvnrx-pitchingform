@@ -12,49 +12,35 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #e4e4e7;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f0f1a;
+            color: #d4d4d8;
             min-height: 100vh;
-            padding: 2rem 1rem;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            padding: 3rem 1.5rem;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 750px;
             margin: 0 auto;
         }
 
         header {
-            text-align: center;
             margin-bottom: 3rem;
             position: relative;
         }
 
         .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #f4f4f5;
             margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
         }
 
         .tagline {
-            font-size: 1.1rem;
-            color: #a1a1aa;
+            font-size: 0.95rem;
+            color: #71717a;
             margin-bottom: 2rem;
         }
 
@@ -63,72 +49,64 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
             cursor: pointer;
             opacity: 0;
-            transition: all 0.15s ease;
+            transition: opacity 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #667eea;
-            font-size: 1.2rem;
+            color: #71717a;
+            font-size: 0.9rem;
+            text-decoration: none;
         }
 
         .admin-btn:hover {
-            opacity: 1;
-            background: rgba(102, 126, 234, 0.1);
-            border-color: rgba(102, 126, 234, 0.3);
+            opacity: 0.6;
+            border-color: #27272a;
         }
 
         .intro-box {
-            background: rgba(102, 126, 234, 0.1);
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 0 auto;
-            max-width: 700px;
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 2.5rem;
+            font-size: 0.9rem;
         }
 
         .intro-box p {
-            margin-bottom: 0.75rem;
-            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            color: #a1a1aa;
         }
 
         .intro-box p:last-child {
             margin-bottom: 0;
         }
 
+        .intro-box strong {
+            color: #d4d4d8;
+        }
+
         .required {
-            color: #ef4444;
-            font-weight: 700;
+            color: #e11d48;
         }
 
         .form-section {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            transition: all 0.15s ease;
-        }
-
-        .form-section:hover {
-            border-color: rgba(102, 126, 234, 0.3);
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+            margin-bottom: 2.5rem;
         }
 
         .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f4f4f5;
+            margin-bottom: 1.25rem;
             padding-bottom: 0.75rem;
-            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+            border-bottom: 1px solid #27272a;
         }
 
         .form-group {
@@ -142,8 +120,9 @@
         label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #e4e4e7;
+            font-weight: 500;
+            color: #d4d4d8;
+            font-size: 0.9rem;
         }
 
         input[type="text"],
@@ -152,27 +131,31 @@
         select,
         textarea {
             width: 100%;
-            padding: 0.75rem 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            padding: 0.65rem 0.85rem;
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 6px;
             color: #e4e4e7;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-family: inherit;
-            transition: all 0.15s ease;
+            transition: border-color 0.2s, background-color 0.2s;
         }
 
         input:focus,
         select:focus,
         textarea:focus {
             outline: none;
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #3f3f46;
+            background: #1a1a1f;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #52525b;
         }
 
         textarea {
-            min-height: 120px;
+            min-height: 100px;
             resize: vertical;
         }
 
@@ -181,100 +164,90 @@
         }
 
         .helper-text {
-            margin-top: 0.5rem;
-            font-size: 0.875rem;
-            color: #a1a1aa;
-            line-height: 1.4;
+            margin-top: 0.4rem;
+            font-size: 0.85rem;
+            color: #71717a;
         }
 
         .char-count {
-            color: #667eea;
-            font-weight: 600;
+            color: #a1a1aa;
         }
 
         .radio-group {
             display: flex;
-            gap: 1rem;
-            margin-top: 0.75rem;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
         }
 
         .radio-option {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.25rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            padding: 0.65rem 1rem;
+            background: #18181b;
+            border: 1px solid #27272a;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: border-color 0.2s;
             flex: 1;
+            font-size: 0.9rem;
         }
 
         .radio-option:hover {
-            background: rgba(102, 126, 234, 0.1);
-            border-color: rgba(102, 126, 234, 0.3);
+            border-color: #3f3f46;
         }
 
         .radio-option input[type="radio"] {
             width: auto;
             margin: 0;
             cursor: pointer;
-        }
-
-        .radio-option input[type="radio"]:checked + span {
-            color: #667eea;
-            font-weight: 600;
+            accent-color: #f4f4f5;
         }
 
         .submit-section {
             text-align: center;
-            margin: 3rem 0;
+            margin: 3rem 0 2rem;
         }
 
         button[type="submit"] {
-            padding: 1rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 0.85rem 2.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            background: #f4f4f5;
+            color: #0f0f1a;
             border: none;
-            border-radius: 12px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.15s ease;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            transition: background-color 0.2s, transform 0.1s;
         }
 
         button[type="submit"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            background: #e4e4e7;
         }
 
         button[type="submit"]:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
         button[type="submit"]:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
 
         footer {
             text-align: center;
-            padding: 2rem 0;
-            color: #71717a;
-            font-size: 0.875rem;
+            padding: 2rem 0 1rem;
+            color: #52525b;
+            font-size: 0.85rem;
         }
 
-        /* Loading state */
         .loading {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(26, 26, 46, 0.95);
+            background: rgba(15, 15, 26, 0.95);
             display: none;
             justify-content: center;
             align-items: center;
@@ -286,12 +259,12 @@
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid #667eea;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #27272a;
+            border-top: 2px solid #f4f4f5;
             border-radius: 50%;
-            animation: spin 0.6s linear infinite;
+            animation: spin 0.7s linear infinite;
         }
 
         @keyframes spin {
@@ -301,25 +274,15 @@
 
         @media (max-width: 768px) {
             body {
-                padding: 1rem 0.5rem;
+                padding: 2rem 1rem;
             }
 
             .logo {
-                font-size: 2rem;
-            }
-
-            .form-section {
-                padding: 1.5rem;
+                font-size: 1.5rem;
             }
 
             .radio-group {
                 flex-direction: column;
-            }
-
-            .admin-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 1rem;
             }
         }
     </style>
@@ -526,29 +489,18 @@
     </div>
 
     <script>
-        // Smooth page load
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.style.opacity = '1';
-        });
-
-        // Character counter with smooth updates
+        // Character counter
         const textareas = document.querySelectorAll('textarea[maxlength]');
         textareas.forEach(textarea => {
             const counter = document.querySelector(`.char-count[data-target="${textarea.id}"]`);
             if (counter) {
                 textarea.addEventListener('input', () => {
                     counter.textContent = textarea.value.length;
-                    // Visual feedback when approaching limit
-                    if (textarea.value.length > textarea.maxLength * 0.9) {
-                        counter.style.color = '#ef4444';
-                    } else {
-                        counter.style.color = '#667eea';
-                    }
                 });
             }
         });
 
-        // Show focus track for EP/Album with smooth animation
+        // Show focus track for EP/Album
         const formatSelect = document.getElementById('format');
         const focusTrackGroup = document.getElementById('focusTrackGroup');
         const focusTrackInput = document.getElementById('focusTrack');
@@ -557,26 +509,13 @@
             if (formatSelect.value === 'EP' || formatSelect.value === 'Album') {
                 focusTrackGroup.style.display = 'block';
                 focusTrackInput.required = true;
-                setTimeout(() => {
-                    focusTrackGroup.style.opacity = '1';
-                    focusTrackGroup.style.transform = 'translateY(0)';
-                }, 10);
             } else {
-                focusTrackGroup.style.opacity = '0';
-                focusTrackGroup.style.transform = 'translateY(-10px)';
-                setTimeout(() => {
-                    focusTrackGroup.style.display = 'none';
-                    focusTrackInput.required = false;
-                }, 150);
+                focusTrackGroup.style.display = 'none';
+                focusTrackInput.required = false;
             }
         });
 
-        // Add smooth transition styles to focus track group
-        focusTrackGroup.style.transition = 'all 0.15s ease';
-        focusTrackGroup.style.opacity = '0';
-        focusTrackGroup.style.transform = 'translateY(-10px)';
-
-        // Release date validation with improved UX
+        // Release date validation
         const releaseDateInput = document.getElementById('releaseDate');
         const releaseDateWarning = document.getElementById('release-date-warning');
         
@@ -586,21 +525,20 @@
             const twoWeeksFromNow = new Date(today.getTime() + (14 * 24 * 60 * 60 * 1000));
             
             if (selectedDate < twoWeeksFromNow) {
-                releaseDateWarning.textContent = '⚠️ Warning: Less than 2 weeks notice. Priority consideration may be limited.';
+                releaseDateWarning.textContent = 'Warning: Less than 2 weeks notice. Priority consideration may be limited.';
                 releaseDateWarning.style.display = 'block';
-                releaseDateWarning.style.animation = 'fadeIn 0.3s ease-out';
             } else {
                 releaseDateWarning.style.display = 'none';
             }
         });
 
-        // Enhanced form submission with loading overlay
+        // Form submission
         const form = document.getElementById('submission-form');
         const submitBtn = document.getElementById('submit-btn');
         const loadingOverlay = document.getElementById('loadingOverlay');
         
-        form.addEventListener('submit', (e) => {
-            submitBtn.textContent = '✨ Submitting...';
+        form.addEventListener('submit', () => {
+            submitBtn.textContent = 'Submitting...';
             submitBtn.disabled = true;
             loadingOverlay.classList.add('active');
         });
@@ -608,27 +546,6 @@
         // Set minimum date to today
         const today = new Date().toISOString().split('T')[0];
         releaseDateInput.setAttribute('min', today);
-
-        // Smooth scroll to first error on validation fail
-        form.addEventListener('invalid', (e) => {
-            e.preventDefault();
-            const firstInvalid = form.querySelector(':invalid');
-            if (firstInvalid) {
-                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                firstInvalid.focus();
-            }
-        }, true);
-
-        // Add floating label effect on focus
-        const inputs = document.querySelectorAll('input, select, textarea');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.style.transform = 'scale(1.01)';
-            });
-            input.addEventListener('blur', function() {
-                this.style.transform = 'scale(1)';
-            });
-        });
     </script>
 </body>
 </html>
