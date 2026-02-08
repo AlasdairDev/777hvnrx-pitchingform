@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - 777 Heaven Records</title>
-    <link rel="stylesheet" href="/admin.css">
+    <link rel="stylesheet" href="/css/admin.css">
     <style>
         * {
             margin: 0;
@@ -663,10 +663,10 @@
         <h1>🎵 Admin Dashboard - 777 Heaven Records</h1>
         <div class="burger-menu">
             <div class="user-display">
-                <div class="user-icon"><%= username.charAt(0).toUpperCase() %></div>
+                <div class="user-icon"><%= admin.username.charAt(0).toUpperCase() %></div>
                 <div class="user-name">
-                    <span><%= username %></span>
-                    <span>Admin</span>
+                    <span><%= admin.username %></span>
+                    <span><%= admin.role.replace('_', ' ') %></span>
                 </div>
             </div>
             <button class="burger-btn" id="burgerBtn">
@@ -675,8 +675,11 @@
                 <span></span>
             </button>
             <div class="dropdown-menu" id="dropdownMenu">
-                <a href="/admin/settings">Settings</a>
-                <button onclick="handleLogout()" class="logout-btn">Logout</button>
+                <a href="/admin/change-password">🔑 Change Password</a>
+                <% if (admin.role === 'super_admin') { %>
+                    <a href="/admin/admins">👥 Manage Admins</a>
+                <% } %>
+                <a href="/admin/logout" class="logout-btn">🚪 Logout</a>
             </div>
         </div>
     </div>
@@ -811,11 +814,14 @@
         </div>
     </div>
 
+    <!-- Submission data for modal -->
+    <script type="application/json" id="submissionsData">
+        <%- JSON.stringify(submissions) %>
+    </script>
+
     <script>
         // Submission data for modal
-        /* eslint-disable */
-        const submissionsData = <%- JSON.stringify(submissions) %>;
-        /* eslint-enable */
+        const submissionsData = JSON.parse(document.getElementById('submissionsData').textContent);
 
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
