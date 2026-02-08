@@ -94,7 +94,7 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            transition: all 0.3s;
+            transition: all 0.15s ease;
         }
 
         .burger-btn:hover {
@@ -106,7 +106,7 @@
             height: 2px;
             background: #e4e4e7;
             border-radius: 2px;
-            transition: all 0.3s;
+            transition: all 0.15s ease;
         }
 
         .burger-btn.active span:nth-child(1) {
@@ -135,8 +135,8 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s;
+            transform: translateY(-8px);
+            transition: all 0.15s ease;
             z-index: 1000;
             pointer-events: none;
         }
@@ -159,7 +159,7 @@
             text-decoration: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.1s ease;
             text-align: left;
             font-size: 0.9rem;
         }
@@ -191,10 +191,10 @@
             }
         }
 
-        /* Page Transition Animations */
+        /* Page Transition Animations - ULTRA FAST */
         body {
             opacity: 1;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.08s ease;
         }
 
         body.page-transitioning {
@@ -213,7 +213,7 @@
             align-items: center;
             z-index: 9999;
             opacity: 0;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.08s ease;
         }
 
         .loading-overlay.active {
@@ -222,12 +222,12 @@
         }
 
         .loading-spinner {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border: 3px solid rgba(255, 255, 255, 0.1);
             border-top: 3px solid #667eea;
             border-radius: 50%;
-            animation: spin 0.6s linear infinite;
+            animation: spin 0.4s linear infinite;
         }
 
         @keyframes spin {
@@ -236,13 +236,13 @@
         }
 
         .fade-in {
-            animation: fadeIn 0.3s ease-out;
+            animation: fadeIn 0.2s ease-out;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(8px);
+                transform: translateY(5px);
             }
             to {
                 opacity: 1;
@@ -256,7 +256,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.15s ease;
             text-decoration: none;
             display: inline-block;
         }
@@ -305,7 +305,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 1.5rem;
-            transition: all 0.3s;
+            transition: all 0.15s ease;
         }
 
         .stat-card:hover {
@@ -344,7 +344,7 @@
             color: #a1a1aa;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.15s ease;
             position: relative;
             text-decoration: none;
         }
@@ -746,7 +746,7 @@
                 console.error('Burger menu elements not found!');
             }
 
-            // Smooth page transitions for all navigation links
+            // Smooth page transitions for all navigation links - ULTRA FAST
             function addSmoothTransition(element, callback) {
                 element.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -755,14 +755,14 @@
                     loadingOverlay.classList.add('active');
                     document.body.classList.add('page-transitioning');
                     
-                    // Navigate after animation (faster now!)
+                    // Navigate after animation - SUPER QUICK!
                     setTimeout(function() {
                         if (callback) {
                             callback();
                         } else {
                             window.location.href = element.href;
                         }
-                    }, 150);
+                    }, 80);
                 });
             }
 
