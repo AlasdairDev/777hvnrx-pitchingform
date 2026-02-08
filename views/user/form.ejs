@@ -4,11 +4,330 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artist Pitch - 777heaven Records</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e4e4e7;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #a1a1aa;
+            margin-bottom: 2rem;
+        }
+
+        /* Hidden Admin Button */
+        .admin-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        .admin-btn:hover {
+            opacity: 1;
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .intro-box {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 0 auto;
+            max-width: 700px;
+        }
+
+        .intro-box p {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .intro-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .required {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.15s ease;
+        }
+
+        .form-section:hover {
+            border-color: rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #e4e4e7;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #e4e4e7;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.15s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .helper-text {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #a1a1aa;
+            line-height: 1.4;
+        }
+
+        .char-count {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            flex: 1;
+        }
+
+        .radio-option:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"]:checked + span {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        button[type="submit"] {
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        button[type="submit"]:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #71717a;
+            font-size: 0.875rem;
+        }
+
+        /* Loading state */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .radio-group {
+                flex-direction: column;
+            }
+
+            .admin-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <a href="/admin/login" class="admin-btn" title="Admin Login">🔐</a>
             <h1 class="logo">777heaven Records</h1>
             <p class="tagline">Pitching Portal</p>
             
@@ -92,7 +411,7 @@
                 <div class="form-group">
                     <label for="releaseDate">Release Date <span class="required">*</span></label>
                     <input type="date" id="releaseDate" name="releaseDate" required>
-                    <div class="helper-text" id="release-date-warning" style="display: none; color: var(--red);"></div>
+                    <div class="helper-text" id="release-date-warning" style="display: none; color: #ef4444; font-weight: 600;"></div>
                 </div>
 
                 <div class="form-group">
@@ -201,56 +520,115 @@
         </footer>
     </div>
 
+    <!-- Loading Overlay -->
+    <div class="loading" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
     <script>
-        // Character counter
+        // Smooth page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.style.opacity = '1';
+        });
+
+        // Character counter with smooth updates
         const textareas = document.querySelectorAll('textarea[maxlength]');
         textareas.forEach(textarea => {
             const counter = document.querySelector(`.char-count[data-target="${textarea.id}"]`);
             if (counter) {
                 textarea.addEventListener('input', () => {
                     counter.textContent = textarea.value.length;
+                    // Visual feedback when approaching limit
+                    if (textarea.value.length > textarea.maxLength * 0.9) {
+                        counter.style.color = '#ef4444';
+                    } else {
+                        counter.style.color = '#667eea';
+                    }
                 });
             }
         });
 
-        // Show focus track for EP/Album
+        // Show focus track for EP/Album with smooth animation
         const formatSelect = document.getElementById('format');
         const focusTrackGroup = document.getElementById('focusTrackGroup');
+        const focusTrackInput = document.getElementById('focusTrack');
+        
         formatSelect.addEventListener('change', () => {
             if (formatSelect.value === 'EP' || formatSelect.value === 'Album') {
                 focusTrackGroup.style.display = 'block';
+                focusTrackInput.required = true;
+                setTimeout(() => {
+                    focusTrackGroup.style.opacity = '1';
+                    focusTrackGroup.style.transform = 'translateY(0)';
+                }, 10);
             } else {
-                focusTrackGroup.style.display = 'none';
+                focusTrackGroup.style.opacity = '0';
+                focusTrackGroup.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    focusTrackGroup.style.display = 'none';
+                    focusTrackInput.required = false;
+                }, 150);
             }
         });
 
-        // Release date validation (2 weeks minimum)
+        // Add smooth transition styles to focus track group
+        focusTrackGroup.style.transition = 'all 0.15s ease';
+        focusTrackGroup.style.opacity = '0';
+        focusTrackGroup.style.transform = 'translateY(-10px)';
+
+        // Release date validation with improved UX
         const releaseDateInput = document.getElementById('releaseDate');
         const releaseDateWarning = document.getElementById('release-date-warning');
+        
         releaseDateInput.addEventListener('change', () => {
             const selectedDate = new Date(releaseDateInput.value);
             const today = new Date();
             const twoWeeksFromNow = new Date(today.getTime() + (14 * 24 * 60 * 60 * 1000));
             
             if (selectedDate < twoWeeksFromNow) {
-                releaseDateWarning.textContent = 'Warning: Less than 2 weeks notice. Priority consideration may be limited.';
+                releaseDateWarning.textContent = '⚠️ Warning: Less than 2 weeks notice. Priority consideration may be limited.';
                 releaseDateWarning.style.display = 'block';
+                releaseDateWarning.style.animation = 'fadeIn 0.3s ease-out';
             } else {
                 releaseDateWarning.style.display = 'none';
             }
         });
 
-        // Form submission feedback
+        // Enhanced form submission with loading overlay
         const form = document.getElementById('submission-form');
         const submitBtn = document.getElementById('submit-btn');
-        form.addEventListener('submit', () => {
-            submitBtn.textContent = 'Submitting...';
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        
+        form.addEventListener('submit', (e) => {
+            submitBtn.textContent = '✨ Submitting...';
             submitBtn.disabled = true;
+            loadingOverlay.classList.add('active');
         });
 
         // Set minimum date to today
         const today = new Date().toISOString().split('T')[0];
         releaseDateInput.setAttribute('min', today);
+
+        // Smooth scroll to first error on validation fail
+        form.addEventListener('invalid', (e) => {
+            e.preventDefault();
+            const firstInvalid = form.querySelector(':invalid');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstInvalid.focus();
+            }
+        }, true);
+
+        // Add floating label effect on focus
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transform = 'scale(1.01)';
+            });
+            input.addEventListener('blur', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
     </script>
 </body>
 </html>
