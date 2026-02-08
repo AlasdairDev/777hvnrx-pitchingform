@@ -488,6 +488,169 @@
             margin-right: 0.5rem;
         }
 
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 36, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #232332;
+            border: 1px solid #343444;
+            border-radius: 6px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: #f4f4f5;
+            font-size: 1.25rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #71717a;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #343444;
+            color: #e4e4e7;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #a1a1aa;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            background: #1a1a24;
+            border: 1px solid #343444;
+            border-radius: 6px;
+            color: #e4e4e7;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #52525b;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 0.5rem;
+            color: #71717a;
+            font-size: 0.8rem;
+        }
+
+        .password-requirements {
+            background: #1a1a24;
+            border: 1px solid #343444;
+            border-radius: 6px;
+            padding: 0.85rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .password-requirements h4 {
+            color: #d4d4d8;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .password-requirements ul {
+            list-style: none;
+            color: #71717a;
+        }
+
+        .password-requirements li {
+            padding: 0.2rem 0;
+        }
+
+        .password-requirements li::before {
+            content: "• ";
+            color: #d4d4d8;
+            margin-right: 0.5rem;
+        }
+
+        .role-info {
+            background: #1a1a24;
+            border: 1px solid #343444;
+            border-radius: 6px;
+            padding: 0.85rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #71717a;
+            line-height: 1.5;
+        }
+
+        .role-info strong {
+            color: #d4d4d8;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1rem;
@@ -513,6 +676,11 @@
             table {
                 min-width: 800px;
             }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -522,8 +690,97 @@
         <div class="loading-spinner"></div>
     </div>
 
+    <!-- Create Admin Modal -->
+    <div id="createAdminModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👤 Create New Admin</h2>
+                <button class="modal-close" onclick="closeCreateModal()">&times;</button>
+            </div>
+
+            <form id="createAdminForm" method="POST" action="/admin/admins/create">
+                <div class="form-group">
+                    <label for="username">Username *</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        required 
+                        autocomplete="off"
+                        pattern="[a-zA-Z0-9_-]{3,20}"
+                        title="3-20 characters: letters, numbers, underscore, hyphen"
+                    >
+                    <small>3-20 characters. Letters, numbers, underscore, or hyphen only.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required
+                        autocomplete="email"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required
+                        minlength="8"
+                        autocomplete="new-password"
+                    >
+                    <div class="password-requirements">
+                        <h4>Password Requirements:</h4>
+                        <ul>
+                            <li>At least 8 characters long</li>
+                            <li>Mix of uppercase and lowercase letters recommended</li>
+                            <li>Include numbers and special characters recommended</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password *</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        required
+                        minlength="8"
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role *</label>
+                    <select id="role" name="role" required>
+                        <option value="">Select a role</option>
+                        <option value="moderator">Moderator</option>
+                        <option value="admin">Admin</option>
+                        <option value="super_admin">Super Admin</option>
+                    </select>
+                    <div class="role-info">
+                        <strong>Moderator:</strong> Can view and archive submissions<br>
+                        <strong>Admin:</strong> Can create, edit, archive, and export submissions<br>
+                        <strong>Super Admin:</strong> Full system access including admin management
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="closeCreateModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Admin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="header">
-        <h1>777heaven Admin Portal</h1>
+        <h1>🎵 777 Heaven Records</h1>
         <div class="burger-menu">
             <div class="user-display">
                 <div class="user-icon"><%= admin.username.charAt(0).toUpperCase() %></div>
@@ -538,13 +795,13 @@
                 <span></span>
             </button>
             <div id="dropdownMenu" class="dropdown-menu">
-                <a href="/admin/dashboard">Dashboard</a>
+                <a href="/admin/dashboard">🏠 Dashboard</a>
                 <% if (admin.role === 'super_admin') { %>
-                    <a href="/admin/admins">Admin Management</a>
+                    <a href="/admin/admins">👥 Admin Management</a>
                 <% } %>
-                <a href="/admin/audit-logs">Audit Logs</a>
-                <a href="/admin/change-password">Change Password</a>
-                <button onclick="handleLogout()" class="logout-btn">Logout</button>
+                <a href="/admin/audit-logs">📋 Audit Logs</a>
+                <a href="/admin/change-password">🔒 Change Password</a>
+                <button onclick="handleLogout()" class="logout-btn">🚪 Logout</button>
             </div>
         </div>
     </div>
@@ -584,9 +841,9 @@
 
         <!-- Toolbar -->
         <div class="toolbar">
-            <h2>Admin Accounts</h2>
+            <h2>👥 Admin Accounts</h2>
             <% if (admin.role === 'super_admin') { %>
-                <a href="/admin/admins/create" class="btn btn-primary">+ Create New Admin</a>
+                <button onclick="openCreateModal()" class="btn btn-primary">+ Create New Admin</button>
             <% } %>
         </div>
 
@@ -719,15 +976,36 @@
                 });
             }
 
-            document.querySelectorAll('.dropdown-menu a, .breadcrumb a, a.btn-primary').forEach(function(link) {
+            document.querySelectorAll('.dropdown-menu a, .breadcrumb a').forEach(function(link) {
                 addSmoothTransition(link);
             });
 
             // Handle form submissions with loading overlay
-            document.querySelectorAll('form').forEach(function(form) {
+            document.querySelectorAll('form:not(#createAdminForm)').forEach(function(form) {
                 form.addEventListener('submit', function(e) {
                     loadingOverlay.classList.add('active');
                 });
+            });
+
+            // Password confirmation validation
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+
+            function validatePassword() {
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity('Passwords do not match');
+                } else {
+                    confirmPassword.setCustomValidity('');
+                }
+            }
+
+            password.addEventListener('change', validatePassword);
+            confirmPassword.addEventListener('keyup', validatePassword);
+
+            // Create admin form submission
+            const createAdminForm = document.getElementById('createAdminForm');
+            createAdminForm.addEventListener('submit', function(e) {
+                loadingOverlay.classList.add('active');
             });
         });
 
@@ -737,6 +1015,36 @@
                 window.location.href = '/admin/logout';
             }, 80);
         }
+
+        function openCreateModal() {
+            const modal = document.getElementById('createAdminModal');
+            modal.classList.add('active');
+            // Focus on first input
+            setTimeout(() => {
+                document.getElementById('username').focus();
+            }, 100);
+        }
+
+        function closeCreateModal() {
+            const modal = document.getElementById('createAdminModal');
+            modal.classList.remove('active');
+            // Reset form
+            document.getElementById('createAdminForm').reset();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('createAdminModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCreateModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeCreateModal();
+            }
+        });
     </script>
 </body>
 </html>
