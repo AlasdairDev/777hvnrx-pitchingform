@@ -695,7 +695,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>👤 Create New Admin</h2>
-                <button class="modal-close" onclick="closeCreateModal()">&times;</button>
+                <button type="button" class="modal-close" id="modalCloseBtn">&times;</button>
             </div>
 
             <form id="createAdminForm" method="POST" action="/admin/admins/create">
@@ -772,7 +772,7 @@
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="btn btn-secondary" onclick="closeCreateModal()">Cancel</button>
+                    <button type="button" class="btn btn-secondary" id="modalCancelBtn">Cancel</button>
                     <button type="submit" class="btn btn-primary">Create Admin</button>
                 </div>
             </form>
@@ -843,7 +843,7 @@
         <div class="toolbar">
             <h2>👥 Admin Accounts</h2>
             <% if (admin.role === 'super_admin') { %>
-                <button onclick="openCreateModal()" class="btn btn-primary">+ Create New Admin</button>
+                <button type="button" id="createAdminBtn" class="btn btn-primary">+ Create New Admin</button>
             <% } %>
         </div>
 
@@ -943,11 +943,43 @@
     </div>
 
     <script>
+        // Define modal functions in global scope
+        function openCreateModal() {
+            const modal = document.getElementById('createAdminModal');
+            if (modal) {
+                modal.classList.add('active');
+                setTimeout(() => {
+                    const usernameInput = document.getElementById('username');
+                    if (usernameInput) {
+                        usernameInput.focus();
+                    }
+                }, 100);
+            }
+        }
+
+        function closeCreateModal() {
+            const modal = document.getElementById('createAdminModal');
+            const form = document.getElementById('createAdminForm');
+            
+            if (modal) {
+                modal.classList.remove('active');
+            }
+            
+            if (form) {
+                form.reset();
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const burgerBtn = document.getElementById('burgerBtn');
             const dropdownMenu = document.getElementById('dropdownMenu');
             const loadingOverlay = document.getElementById('loadingOverlay');
+            const createAdminBtn = document.getElementById('createAdminBtn');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modal = document.getElementById('createAdminModal');
             
+            // Burger menu
             if (burgerBtn && dropdownMenu) {
                 burgerBtn.addEventListener('click', function(event) {
                     event.preventDefault();
@@ -964,6 +996,45 @@
                     }
                 });
             }
+
+            // Create admin button - USING EVENT LISTENER
+            if (createAdminBtn) {
+                createAdminBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openCreateModal();
+                });
+            }
+
+            // Modal close buttons
+            if (modalCloseBtn) {
+                modalCloseBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    closeCreateModal();
+                });
+            }
+
+            if (modalCancelBtn) {
+                modalCancelBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    closeCreateModal();
+                });
+            }
+
+            // Close modal when clicking outside
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeCreateModal();
+                    }
+                });
+            }
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeCreateModal();
+                }
+            });
 
             // Smooth transitions
             function addSmoothTransition(element) {
@@ -999,14 +1070,18 @@
                 }
             }
 
-            password.addEventListener('change', validatePassword);
-            confirmPassword.addEventListener('keyup', validatePassword);
+            if (password && confirmPassword) {
+                password.addEventListener('change', validatePassword);
+                confirmPassword.addEventListener('keyup', validatePassword);
+            }
 
             // Create admin form submission
             const createAdminForm = document.getElementById('createAdminForm');
-            createAdminForm.addEventListener('submit', function(e) {
-                loadingOverlay.classList.add('active');
-            });
+            if (createAdminForm) {
+                createAdminForm.addEventListener('submit', function(e) {
+                    loadingOverlay.classList.add('active');
+                });
+            }
         });
 
         function handleLogout() {
@@ -1015,36 +1090,6 @@
                 window.location.href = '/admin/logout';
             }, 80);
         }
-
-        function openCreateModal() {
-            const modal = document.getElementById('createAdminModal');
-            modal.classList.add('active');
-            // Focus on first input
-            setTimeout(() => {
-                document.getElementById('username').focus();
-            }, 100);
-        }
-
-        function closeCreateModal() {
-            const modal = document.getElementById('createAdminModal');
-            modal.classList.remove('active');
-            // Reset form
-            document.getElementById('createAdminForm').reset();
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('createAdminModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeCreateModal();
-            }
-        });
-
-        // Close modal on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeCreateModal();
-            }
-        });
     </script>
 </body>
 </html>
