@@ -125,148 +125,16 @@ app.get('/admin/logout', adminController.logout);
 // Apply rate limiting to all admin routes
 app.use('/admin', apiLimiter);
 
-// Dashboard
-app.get('/admin/dashboard', 
-    adminController.requireAuth, 
-    adminController.showDashboard
-);
-
-// View submission
-app.get('/admin/submission/:id', 
-    adminController.requireAuth, 
-    adminController.viewSubmission
-);
-
 // ==================== ADMIN ROUTES ====================
 
-// Import the route file you uploaded
-const adminRoutes = require('./routes/adminRoutes'); // Make sure the filename matches exactly!
-
-// 1. Redirect /admin to /admin/login (This fixes your access issue!)
+// Redirect /admin to /admin/login
 app.get('/admin', (req, res) => {
     res.redirect('/admin/login');
 });
 
-// 2. Use the adminRoutes file for everything else
-// This replaces all those manual app.get/app.post lines you had
+// Use the adminRoutes file - handles all admin panel routes
+const adminRoutes = require('./routes/adminRoutes');
 app.use('/admin', adminRoutes);
-
-// ==================== SUBMISSION ACTIONS ====================
-
-// Archive
-app.post('/admin/submission/:id/archive', 
-    adminController.requireAuth,
-    adminController.requirePermission('archive'),
-    adminController.archiveSubmission
-);
-
-// Unarchive
-app.post('/admin/submission/:id/unarchive', 
-    adminController.requireAuth,
-    adminController.requirePermission('archive'),
-    adminController.unarchiveSubmission
-);
-
-// Soft delete (move to trash)
-app.post('/admin/submission/:id/delete', 
-    adminController.requireAuth,
-    adminController.requirePermission('delete'),
-    adminController.deleteSubmission
-);
-
-// Restore from trash
-app.post('/admin/submission/:id/restore', 
-    adminController.requireAuth,
-    adminController.requirePermission('delete'),
-    adminController.restoreSubmission
-);
-
-// Permanent delete
-app.post('/admin/submission/:id/permanent-delete', 
-    adminController.requireAuth,
-    adminController.requirePermission('delete'),
-    adminController.permanentDeleteSubmission
-);
-
-// Update status
-app.post('/admin/submission/:id/status', 
-    adminController.requireAuth,
-    adminController.requirePermission('edit'),
-    adminController.updateSubmissionStatus
-);
-
-// ==================== BULK OPERATIONS ====================
-
-app.post('/admin/bulk-action', 
-    adminController.requireAuth,
-    adminController.requirePermission('archive'),
-    adminController.bulkAction
-);
-
-// ==================== DATA EXPORT ====================
-
-app.get('/admin/export', 
-    adminController.requireAuth,
-    adminController.requirePermission('export'),
-    adminController.exportData
-);
-
-// ==================== ADMIN MANAGEMENT ====================
-
-// List admins
-app.get('/admin/admins', 
-    adminController.requireAuth,
-    adminController.requirePermission('manage_admins'),
-    adminController.showAdminManagement
-);
-
-// Create admin form
-app.get('/admin/admins/create', 
-    adminController.requireAuth,
-    adminController.requirePermission('manage_admins'),
-    adminController.showCreateAdmin
-);
-
-// Create admin
-app.post('/admin/admins/create', 
-    adminController.requireAuth,
-    adminController.requirePermission('manage_admins'),
-    adminController.createAdmin
-);
-
-// Toggle admin status (activate/deactivate)
-app.post('/admin/admins/:id/toggle-status', 
-    adminController.requireAuth,
-    adminController.requirePermission('manage_admins'),
-    adminController.toggleAdminStatus
-);
-
-// Delete admin
-app.post('/admin/admins/:id/delete', 
-    adminController.requireAuth,
-    adminController.requirePermission('manage_admins'),
-    adminController.deleteAdmin
-);
-
-// ==================== PASSWORD MANAGEMENT ====================
-
-app.get('/admin/change-password', 
-    adminController.requireAuth,
-    adminController.showChangePassword
-);
-
-app.post('/admin/change-password', 
-    adminController.requireAuth,
-    adminController.changePassword
-);
-
-// ==================== AUDIT LOGS ====================
-
-app.get('/admin/audit-logs', 
-    adminController.requireAuth,
-    adminController.requirePermission('view'),
-    adminController.showAuditLogs
-);
 
 // ==================== ERROR HANDLING ====================
 
