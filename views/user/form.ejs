@@ -79,80 +79,45 @@
             background: #18181b;
         }
 
-        /* Intro Box */
-        .intro-box {
-            background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
-            border: 1px solid #3f3f46;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 3rem;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .intro-box p {
-            margin-bottom: 0.75rem;
-            color: #a1a1aa;
-            line-height: 1.7;
-        }
-
-        .intro-box p:last-child {
-            margin-bottom: 0;
-        }
-
-        .intro-box strong {
-            color: #e4e4e7;
-            font-weight: 600;
-        }
-
         .required {
             color: #f87171;
             font-weight: 600;
         }
 
-        /* Form Sections */
-        .form-section {
-            margin-bottom: 3rem;
+        /* Form Group - Individual Field Container */
+        .form-group {
             background: #18181b;
             border: 1px solid #27272a;
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             transition: border-color 0.3s;
         }
 
-        .form-section:hover {
+        .form-group:hover {
             border-color: #3f3f46;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid #3f3f46;
-            letter-spacing: -0.02em;
-        }
-
-        .form-group {
-            margin-bottom: 1.75rem;
-        }
-
-        .form-group:last-child {
-            margin-bottom: 0;
         }
 
         label {
             display: block;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.75rem;
             font-weight: 600;
             color: #e4e4e7;
-            font-size: 0.95rem;
+            font-size: 1rem;
+        }
+
+        .helper-text {
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            color: #a1a1aa;
+            line-height: 1.6;
+            font-style: italic;
         }
 
         /* Input Styles */
         input[type="text"],
         input[type="url"],
+        input[type="email"],
         input[type="date"],
         select,
         textarea {
@@ -188,7 +153,7 @@
         }
 
         textarea {
-            min-height: 120px;
+            min-height: 100px;
             resize: vertical;
             line-height: 1.6;
         }
@@ -212,36 +177,25 @@
             background: #27272a;
         }
 
-        select option:first-child {
-            color: #71717a;
-        }
-
-        /* Helper Text */
-        .helper-text {
-            margin-top: 0.5rem;
-            font-size: 0.875rem;
-            color: #71717a;
-            line-height: 1.5;
-        }
-
-        .char-count {
+        /* Read-only field for label */
+        input[readonly] {
+            background: #27272a;
+            border-color: #3f3f46;
             color: #a1a1aa;
-            font-weight: 500;
+            cursor: not-allowed;
         }
 
         /* Radio Group */
         .radio-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 0.75rem;
-            margin-top: 0.75rem;
         }
 
         .radio-option {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             padding: 0.75rem 1rem;
             background: #0a0a0f;
             border: 2px solid #27272a;
@@ -262,10 +216,6 @@
             margin: 0;
             cursor: pointer;
             accent-color: #71717a;
-        }
-
-        .radio-option input[type="radio"]:checked + span {
-            color: #ffffff;
         }
 
         .radio-option:has(input:checked) {
@@ -353,34 +303,14 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Validation Styles */
-        input:invalid:not(:placeholder-shown),
-        select:invalid:not(:placeholder-shown),
-        textarea:invalid:not(:placeholder-shown) {
-            border-color: #dc2626;
+        /* Link styling in helper text */
+        .helper-text a {
+            color: #60a5fa;
+            text-decoration: none;
         }
 
-        input:valid:not(:placeholder-shown),
-        select:valid:not(:placeholder-shown),
-        textarea:valid:not(:placeholder-shown) {
-            border-color: #16a34a;
-        }
-
-        /* Warning Alert */
-        .warning-alert {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #dc2626;
-            color: #fca5a5;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            margin-top: 0.75rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            display: none;
-        }
-
-        .warning-alert.show {
-            display: block;
+        .helper-text a:hover {
+            text-decoration: underline;
         }
 
         /* Responsive Design */
@@ -389,39 +319,17 @@
                 padding: 1.5rem 1rem;
             }
 
-            .container {
-                padding: 0 0.5rem;
-            }
-
             .logo {
                 font-size: 1.5rem;
             }
 
-            .form-section {
-                padding: 1.5rem;
-            }
-
-            .section-title {
-                font-size: 1.1rem;
-            }
-
-            .radio-group {
-                grid-template-columns: 1fr;
+            .form-group {
+                padding: 1.25rem;
             }
 
             button[type="submit"] {
                 width: 100%;
                 padding: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .intro-box {
-                padding: 1.25rem;
-            }
-
-            .form-section {
-                padding: 1.25rem;
             }
         }
     </style>
@@ -434,188 +342,156 @@
             <a href="/admin" class="admin-btn">⚙</a>
         </header>
 
-        <div class="intro-box">
-            <p><strong>Before you submit:</strong> Please ensure your release is distributed through ONErpm and scheduled for release. We need <strong>at least 2 weeks lead time</strong> for playlist pitching and promotional planning.</p>
-            <p>Fields marked with <span class="required">*</span> are required.</p>
-        </div>
-
         <form id="submission-form" method="POST" action="/submit">
-            <!-- Artist Information -->
-            <div class="form-section">
-                <div class="section-title">Artist Information</div>
+            
+            <!-- Primary Artist/s -->
+            <div class="form-group">
+                <label for="primaryArtist">Primary Artist/s <span class="required">*</span></label>
+                <input type="text" id="primaryArtist" name="primaryArtist" required placeholder="Your answer">
+            </div>
 
-                <div class="form-group">
-                    <label for="primaryArtist">Primary Artist Name <span class="required">*</span></label>
-                    <input type="text" id="primaryArtist" name="primaryArtist" required placeholder="Enter your artist name">
-                </div>
+            <!-- Featuring Artist/s -->
+            <div class="form-group">
+                <label for="featuringArtist">Featuring Artist/s</label>
+                <input type="text" id="featuringArtist" name="featuringArtist" placeholder="Your answer">
+            </div>
 
-                <div class="form-group">
-                    <label for="featuredArtists">Featured Artists</label>
-                    <input type="text" id="featuredArtists" name="featuredArtists" placeholder="Artist 1, Artist 2 (if applicable)">
-                    <div class="helper-text">Comma-separated list of featured artists</div>
-                </div>
+            <!-- Product Title -->
+            <div class="form-group">
+                <label for="productTitle">Product Title <span class="required">*</span></label>
+                <input type="text" id="productTitle" name="productTitle" required placeholder="Your answer">
+            </div>
 
-                <div class="form-group">
-                    <label for="email">Contact Email <span class="required">*</span></label>
-                    <input type="text" id="email" name="email" required placeholder="your.email@example.com">
-                </div>
+            <!-- Format -->
+            <div class="form-group">
+                <label for="format">Format <span class="required">*</span></label>
+                <select id="format" name="format" required>
+                    <option value="">Choose</option>
+                    <option value="Single">Single</option>
+                    <option value="EP">EP</option>
+                    <option value="Album">Album</option>
+                </select>
+            </div>
 
-                <div class="form-group">
-                    <label for="spotifyLink">Spotify Artist Link <span class="required">*</span></label>
-                    <input type="url" id="spotifyLink" name="spotifyLink" required placeholder="https://open.spotify.com/artist/...">
-                    <div class="helper-text">Your Spotify artist profile URL</div>
-                </div>
+            <!-- Focus Track (EP or Album only) -->
+            <div class="form-group" id="focusTrackGroup" style="display: none;">
+                <label for="focusTrack">Focus Track (EP or Album only)</label>
+                <input type="text" id="focusTrack" name="focusTrack" placeholder="Your answer">
+            </div>
 
-                <div class="form-group">
-                    <label for="socialLinks">Social Media Links</label>
-                    <textarea id="socialLinks" name="socialLinks" placeholder="Instagram: https://instagram.com/yourhandle
-TikTok: https://tiktok.com/@yourhandle
-YouTube: https://youtube.com/@yourchannel"></textarea>
-                    <div class="helper-text">One link per line</div>
+            <!-- Imprint/Label -->
+            <div class="form-group">
+                <label for="label">Imprint/Label <span class="required">*</span></label>
+                <input type="text" id="label" name="label" value="777heaven Records" readonly required>
+            </div>
+
+            <!-- UPC/EAN (Optional) -->
+            <div class="form-group">
+                <label for="upc">UPC/EAN (Optional)</label>
+                <div class="helper-text">If you need your UPC, go to your ONErpm Dashboard → Latest Releases → select your track → this will open the preview/distribute page → click View UPC and ISRC. Paste the UPC here.</div>
+                <input type="text" id="upc" name="upc" placeholder="Your answer">
+            </div>
+
+            <!-- Spotify URI (Optional) -->
+            <div class="form-group">
+                <label for="spotifyUri">Spotify URI (Optional)</label>
+                <div class="helper-text">If you need your Spotify URI, go to Spotify for Artists → Music → select your track → click the three dots (…) → Copy Spotify URI. Paste it here.</div>
+                <input type="text" id="spotifyUri" name="spotifyUri" placeholder="Your answer">
+            </div>
+
+            <!-- Release Date -->
+            <div class="form-group">
+                <label for="releaseDate">Release Date <span class="required">*</span></label>
+                <input type="date" id="releaseDate" name="releaseDate" required>
+            </div>
+
+            <!-- Genre -->
+            <div class="form-group">
+                <label for="genre">Genre <span class="required">*</span></label>
+                <input type="text" id="genre" name="genre" required placeholder="Your answer">
+            </div>
+
+            <!-- Artist Image/s Link -->
+            <div class="form-group">
+                <label for="artistImages">Artist Image/s Link <span class="required">*</span></label>
+                <div class="helper-text">For Artist Images, please upload a high-resolution photo with a plain or non-distracting background. Preferably square format, with the artist's face clearly visible. Paste the Google Drive folder link here.</div>
+                <input type="url" id="artistImages" name="artistImages" required placeholder="Your answer">
+            </div>
+
+            <!-- Spotify Canvas Link -->
+            <div class="form-group">
+                <label for="canvasLink">Spotify Canvas Link:</label>
+                <div class="helper-text">If you have a Spotify Canvas for your track, please paste the Google Drive link here. Leave this blank if you don't have one.</div>
+                <input type="url" id="canvasLink" name="canvasLink" placeholder="Your answer">
+            </div>
+
+            <!-- Is your audio mixed in Dolby Atmos? -->
+            <div class="form-group">
+                <label>Is your audio mixed in Dolby Atmos? <span class="required">*</span></label>
+                <div class="helper-text">Select "YES" if your track is available in Dolby Atmos format. Otherwise, select "NO". Apple Music wants it specified in the pitch.</div>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" id="dolbyYes" name="dolbyAtmos" value="Yes" required>
+                        <span>Yes</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" id="dolbyNo" name="dolbyAtmos" value="No" required>
+                        <span>No</span>
+                    </label>
                 </div>
             </div>
 
-            <!-- Release Information -->
-            <div class="form-section">
-                <div class="section-title">Release Details</div>
-
-                <div class="form-group">
-                    <label for="productTitle">Product Title <span class="required">*</span></label>
-                    <input type="text" id="productTitle" name="productTitle" required placeholder="Enter your track or album title">
-                </div>
-
-                <div class="form-group">
-                    <label for="format">Format <span class="required">*</span></label>
-                    <select id="format" name="format" required>
-                        <option value="">Select format</option>
-                        <option value="Single">Single</option>
-                        <option value="EP">EP</option>
-                        <option value="Album">Album</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="focusTrackGroup" style="display: none;">
-                    <label for="focusTrack">Focus Track</label>
-                    <input type="text" id="focusTrack" name="focusTrack" placeholder="Enter the main single from your EP/Album">
-                    <div class="helper-text">Required for EP or Album - the track you want to push</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="upc">UPC/EAN</label>
-                    <input type="text" id="upc" name="upc" placeholder="123456789012">
-                    <div class="helper-text">ONErpm Dashboard → Latest Releases → select track → View UPC and ISRC</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="spotifyUri">Spotify URI</label>
-                    <input type="text" id="spotifyUri" name="spotifyUri" placeholder="spotify:track:...">
-                    <div class="helper-text">Spotify for Artists → Music → select track → (…) → Copy Spotify URI</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="releaseDate">Release Date <span class="required">*</span></label>
-                    <input type="date" id="releaseDate" name="releaseDate" required>
-                    <div class="warning-alert" id="release-date-warning"></div>
-                </div>
-
-                <div class="form-group">
-                    <label for="genre">Genre <span class="required">*</span></label>
-                    <select id="genre" name="genre" required>
-                        <option value="">Select genre</option>
-                        <option value="Indie Rock">Indie Rock</option>
-                        <option value="Dream Pop">Dream Pop</option>
-                        <option value="Lo-Fi">Lo-Fi / Bedroom Pop</option>
-                        <option value="Folk">Indie Folk / Singer-Songwriter</option>
-                        <option value="Electronic">Indie Electronic / Synth Pop</option>
-                        <option value="Alternative">Alternative / Art Rock</option>
-                        <option value="Post-Punk">Post-Punk / Garage Rock</option>
-                        <option value="Shoegaze">Shoegaze / Noise Pop</option>
-                        <option value="Emo">Emo / Math Rock</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="vibe">Vibe/Mood <span class="required">*</span></label>
-                    <select id="vibe" name="vibe" required>
-                        <option value="">Select vibe</option>
-                        <option value="Chill">Chill / Laid-back</option>
-                        <option value="Energetic">Energetic / Upbeat</option>
-                        <option value="Melancholic">Melancholic / Introspective</option>
-                        <option value="Dark">Dark / Moody</option>
-                        <option value="Dreamy">Dreamy / Ethereal</option>
-                        <option value="Raw">Raw / Emotional</option>
-                        <option value="Nostalgic">Nostalgic / Vintage</option>
-                        <option value="Experimental">Experimental / Avant-garde</option>
-                    </select>
-                </div>
+            <!-- Artist Bio -->
+            <div class="form-group">
+                <label for="artistBio">Artist Bio <span class="required">*</span></label>
+                <div class="helper-text">Provide a concise introduction to the artist, highlighting their background, musical style, and notable achievements. This will give curators insight into their unique identity and artistry:</div>
+                <textarea id="artistBio" name="artistBio" required placeholder="Your answer"></textarea>
             </div>
 
-            <!-- Content Details -->
-            <div class="form-section">
-                <div class="section-title">Content & Marketing</div>
-
-                <div class="form-group">
-                    <label for="songDescription">Song Description <span class="required">*</span></label>
-                    <textarea id="songDescription" name="songDescription" required placeholder="Brief summary including theme, mood, and unique elements that make it stand out..." maxlength="500"></textarea>
-                    <div class="helper-text"><span class="char-count" data-target="songDescription">0</span> / 500 characters</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="marketingBlurb">Marketing Blurb <span class="required">*</span></label>
-                    <textarea id="marketingBlurb" name="marketingBlurb" required placeholder="Short, engaging pitch focusing on unique sound, themes, or story for playlists and media..." maxlength="300"></textarea>
-                    <div class="helper-text"><span class="char-count" data-target="marketingBlurb">0</span> / 300 characters</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="keywords">Keywords <span class="required">*</span></label>
-                    <input type="text" id="keywords" name="keywords" required placeholder="heartbreak, yearning, moving-on, hugot">
-                    <div class="helper-text">Comma-separated keywords for categorization</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="canvasLink">Spotify Canvas Link</label>
-                    <input type="url" id="canvasLink" name="canvasLink" placeholder="https://drive.google.com/...">
-                    <div class="helper-text">Google Drive link to your Spotify Canvas video (optional)</div>
-                </div>
+            <!-- Song Description -->
+            <div class="form-group">
+                <label for="songDescription">Song Description <span class="required">*</span></label>
+                <div class="helper-text">Provide a brief yet engaging summary of the song, including its theme, mood, and unique elements. Highlight what makes it stand out and resonate with listeners:</div>
+                <textarea id="songDescription" name="songDescription" required placeholder="Your answer"></textarea>
             </div>
 
-            <!-- Technical Information -->
-            <div class="form-section">
-                <div class="section-title">Technical Information</div>
+            <!-- Marketing Blurb -->
+            <div class="form-group">
+                <label for="marketingBlurb">Marketing Blurb <span class="required">*</span></label>
+                <div class="helper-text">Write a short, engaging description of your release, focusing on its unique sound, themes, or story. This will help pitch your track to playlists and media. Example: Filipina American singer-songwriter, Zam releases her follow up track, "BGC" after her sensual debut single in Mishka Records, "dahan". "KMST", talking about the frustrations of being an option, is surely your next break up and baddie anthem.</div>
+                <textarea id="marketingBlurb" name="marketingBlurb" required placeholder="Your answer"></textarea>
+            </div>
 
-                <div class="form-group">
-                    <label>Is your audio mixed in Dolby Atmos? <span class="required">*</span></label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" id="dolbyYes" name="dolbyAtmos" value="Yes" required>
-                            <span>Yes</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" id="dolbyNo" name="dolbyAtmos" value="No" required>
-                            <span>No</span>
-                        </label>
-                    </div>
-                    <div class="helper-text">Apple Music spatial audio requirement</div>
-                </div>
+            <!-- Socials -->
+            <div class="form-group">
+                <label for="socials">Socials <span class="required">*</span></label>
+                <div class="helper-text">Provide the official links to your social media profiles:</div>
+                <textarea id="socials" name="socials" required placeholder="Your answer"></textarea>
+            </div>
 
-                <div class="form-group">
-                    <label>Is this your debut release?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" id="debutYes" name="debutRelease" value="Yes">
-                            <span>Yes</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" id="debutNo" name="debutRelease" value="No">
-                            <span>No</span>
-                        </label>
-                    </div>
-                </div>
+            <!-- Keywords -->
+            <div class="form-group">
+                <label for="keywords">Keywords <span class="required">*</span></label>
+                <div class="helper-text">Ex. Heartbreak, yearning, moving-on, hugot</div>
+                <input type="text" id="keywords" name="keywords" required placeholder="Your answer">
+            </div>
+
+            <!-- Promo Info and Timeline -->
+            <div class="form-group">
+                <label for="promoInfo">Promo Info and Timeline</label>
+                <div class="helper-text">Show us your release plan. Outline simple steps to promote your track effectively. Keep it short and specific. Example: <a href="#" target="_blank">Promotional Info Sample</a></div>
+                <textarea id="promoInfo" name="promoInfo" placeholder="Your answer"></textarea>
+            </div>
+
+            <!-- Marketing Campaigns -->
+            <div class="form-group">
+                <label for="marketingCampaigns">Marketing Campaigns</label>
+                <div class="helper-text">Briefly outline your campaign strategies for driving fans back to DSPs and social media platforms. Example: <a href="#" target="_blank">Marketing Campaign Sample</a></div>
+                <textarea id="marketingCampaigns" name="marketingCampaigns" placeholder="Your answer"></textarea>
             </div>
 
             <div class="submit-section">
-                <button type="submit" id="submit-btn">Submit Pitch</button>
+                <button type="submit" id="submit-btn">Submit</button>
             </div>
         </form>
 
@@ -630,28 +506,7 @@ YouTube: https://youtube.com/@yourchannel"></textarea>
     </div>
 
     <script>
-        // Character counter
-        const textareas = document.querySelectorAll('textarea[maxlength]');
-        textareas.forEach(textarea => {
-            const counter = document.querySelector(`.char-count[data-target="${textarea.id}"]`);
-            if (counter) {
-                textarea.addEventListener('input', () => {
-                    counter.textContent = textarea.value.length;
-                    
-                    // Visual feedback on character limit
-                    const percentage = (textarea.value.length / textarea.maxLength) * 100;
-                    if (percentage > 90) {
-                        counter.style.color = '#fca5a5';
-                    } else if (percentage > 75) {
-                        counter.style.color = '#fcd34d';
-                    } else {
-                        counter.style.color = '#a1a1aa';
-                    }
-                });
-            }
-        });
-
-        // Show focus track for EP/Album
+        // Show focus track field for EP/Album
         const formatSelect = document.getElementById('format');
         const focusTrackGroup = document.getElementById('focusTrackGroup');
         const focusTrackInput = document.getElementById('focusTrack');
@@ -659,29 +514,9 @@ YouTube: https://youtube.com/@yourchannel"></textarea>
         formatSelect.addEventListener('change', () => {
             if (formatSelect.value === 'EP' || formatSelect.value === 'Album') {
                 focusTrackGroup.style.display = 'block';
-                focusTrackInput.required = true;
             } else {
                 focusTrackGroup.style.display = 'none';
-                focusTrackInput.required = false;
                 focusTrackInput.value = '';
-            }
-        });
-
-        // Release date validation with enhanced warning
-        const releaseDateInput = document.getElementById('releaseDate');
-        const releaseDateWarning = document.getElementById('release-date-warning');
-        
-        releaseDateInput.addEventListener('change', () => {
-            const selectedDate = new Date(releaseDateInput.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const twoWeeksFromNow = new Date(today.getTime() + (14 * 24 * 60 * 60 * 1000));
-            
-            if (selectedDate < twoWeeksFromNow) {
-                releaseDateWarning.textContent = '⚠ Warning: Less than 2 weeks notice. Priority consideration and playlist placement may be limited.';
-                releaseDateWarning.classList.add('show');
-            } else {
-                releaseDateWarning.classList.remove('show');
             }
         });
 
@@ -691,37 +526,15 @@ YouTube: https://youtube.com/@yourchannel"></textarea>
         const loadingOverlay = document.getElementById('loadingOverlay');
         
         form.addEventListener('submit', (e) => {
-            // Validate all required fields
-            const requiredInputs = form.querySelectorAll('[required]');
-            let allValid = true;
-            
-            requiredInputs.forEach(input => {
-                if (!input.value.trim()) {
-                    allValid = false;
-                    input.focus();
-                }
-            });
-            
-            if (allValid) {
-                submitBtn.textContent = 'Submitting...';
-                submitBtn.disabled = true;
-                loadingOverlay.classList.add('active');
-            }
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+            loadingOverlay.classList.add('active');
         });
 
         // Set minimum date to today
+        const releaseDateInput = document.getElementById('releaseDate');
         const today = new Date().toISOString().split('T')[0];
         releaseDateInput.setAttribute('min', today);
-
-        // Add smooth scroll to first error
-        form.addEventListener('invalid', (e) => {
-            e.preventDefault();
-            const firstInvalid = form.querySelector(':invalid');
-            if (firstInvalid) {
-                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                firstInvalid.focus();
-            }
-        }, true);
     </script>
 </body>
 </html>
