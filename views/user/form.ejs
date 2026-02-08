@@ -163,6 +163,24 @@
             cursor: pointer;
         }
 
+        /* Fix dropdown options visibility */
+        select option {
+            background: #18181b;
+            color: #e4e4e7;
+            padding: 0.5rem;
+        }
+
+        select option:checked,
+        select option:hover {
+            background: #27272a;
+            color: #f4f4f5;
+        }
+
+        /* Style the first option (placeholder) differently */
+        select option:first-child {
+            color: #71717a;
+        }
+
         .helper-text {
             margin-top: 0.4rem;
             font-size: 0.85rem;
