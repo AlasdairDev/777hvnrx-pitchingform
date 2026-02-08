@@ -1009,6 +1009,9 @@
                     closeModal();
                 }
             });
+
+            // Initialize filters on page load
+            filterSubmissions();
         });
 
         function handleLogout() {
@@ -1041,6 +1044,11 @@
         // Filter submissions
         function filterSubmissions() {
             console.log('Filtering submissions for tab:', currentTab);
+            console.log('Total submissions in data:', submissionsData.length);
+            
+            // Debug: Count deleted submissions in data
+            const deletedInData = submissionsData.filter(s => s.deleted).length;
+            console.log('Deleted submissions in data:', deletedInData);
             
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const genre = document.getElementById('genreFilter').value;
@@ -1049,8 +1057,11 @@
             const dateTo = document.getElementById('dateToFilter').value;
 
             const rows = document.querySelectorAll('.submission-row');
+            console.log('Total rows in table:', rows.length);
+            
             let visibleCount = 0;
             let tabMatchCount = 0;
+            let deletedRowsCount = 0;
 
             rows.forEach(row => {
                 const status = row.dataset.status;
@@ -1060,6 +1071,8 @@
                 const rowFormat = row.dataset.format;
                 const rowDate = new Date(row.dataset.date);
                 const searchData = row.dataset.search;
+
+                if (isDeleted) deletedRowsCount++;
 
                 // Tab filter
                 let tabMatch = false;
@@ -1100,6 +1113,7 @@
                 if (isVisible) visibleCount++;
             });
 
+            console.log(`Deleted rows in table: ${deletedRowsCount}`);
             console.log(`Tab "${currentTab}": ${tabMatchCount} tab matches, ${visibleCount} visible after all filters`);
 
             // Show empty state if no results
