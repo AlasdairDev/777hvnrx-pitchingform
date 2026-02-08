@@ -813,7 +813,9 @@
 
     <script>
         // Submission data for modal
-        const submissionsData = <%-JSON.stringify(submissions)%>;
+        /* eslint-disable */
+        const submissionsData = <%- JSON.stringify(submissions) %>;
+        /* eslint-enable */
 
         // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
