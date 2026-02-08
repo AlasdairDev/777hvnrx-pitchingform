@@ -47,6 +47,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            position: relative;
         }
 
         .user-display {
@@ -123,7 +124,7 @@
         .dropdown-menu {
             position: absolute;
             top: 100%;
-            right: 2rem;
+            right: 0;
             margin-top: 0.5rem;
             background: rgba(26, 26, 46, 0.98);
             backdrop-filter: blur(10px);
@@ -472,13 +473,13 @@
                 <span></span>
                 <span></span>
             </button>
-        </div>
-        <div class="dropdown-menu" id="dropdownMenu">
-            <a href="/admin/change-password">🔑 Change Password</a>
-            <% if (admin.role === 'super_admin') { %>
-                <a href="/admin/admins">👥 Manage Admins</a>
-            <% } %>
-            <a href="/admin/logout" class="logout-btn">🚪 Logout</a>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="/admin/change-password">🔑 Change Password</a>
+                <% if (admin.role === 'super_admin') { %>
+                    <a href="/admin/admins">👥 Manage Admins</a>
+                <% } %>
+                <a href="/admin/logout" class="logout-btn">🚪 Logout</a>
+            </div>
         </div>
     </div>
 
