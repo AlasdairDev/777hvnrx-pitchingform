@@ -47,7 +47,14 @@ class Submission {
             compilations: this.determineCompilations(formData),
             archived: false,
             deleted: false,
-            status: 'pending' // pending, reviewed, approved, rejected
+            status: 'pending', // pending, reviewed, approved, rejected
+            
+            // ONErpm submission tracking
+            onerpSubmitted: false,
+            onerpSubmittedAt: null,
+            onerpSubmissionAttempted: false,
+            onerpSubmissionAttemptedAt: null,
+            onerpSubmissionError: null
         };
 
         submissions.push(submission);
@@ -163,9 +170,9 @@ class Submission {
             fs.writeFileSync(SUBMISSIONS_FILE, JSON.stringify(submissions, null, 2));
             
             this.logAction('status_update', id, adminUsername, `Status changed from ${oldStatus} to ${status}`);
-            return true;
+            return submission; // Return the full submission object
         }
-        return false;
+        return null;
     }
 
     static getActive() {
@@ -368,6 +375,29 @@ class Submission {
             console.error('Error reading submission audit logs:', error);
             return [];
         }
+    }
+
+    // ONErpm submission methods
+    static markOnerpSubmitted(id, success, error = null) {
+        const submissions = this.getAll(true);
+        const submission = submissions.find(sub => sub.id === id);
+        
+        if (submission) {
+            submission.onerpSubmissionAttempted = true;
+            submission.onerpSubmissionAttemptedAt = new Date().toISOString();
+            
+            if (success) {
+                submission.onerpSubmitted = true;
+                submission.onerpSubmittedAt = new Date().toISOString();
+                submission.onerpSubmissionError = null;
+            } else {
+                submission.onerpSubmissionError = error;
+            }
+            
+            fs.writeFileSync(SUBMISSIONS_FILE, JSON.stringify(submissions, null, 2));
+            return submission;
+        }
+        return null;
     }
 }
 

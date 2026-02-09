@@ -1,5 +1,6 @@
 const Admin = require('../models/Admin');
 const Submission = require('../models/Submission');
+const { submitToONErpm } = require('../services/onerpSubmission');
 
 // ==================== AUTHENTICATION ====================
 
@@ -269,17 +270,99 @@ exports.permanentDeleteSubmission = (req, res) => {
     res.redirect('/admin/dashboard?view=deleted');
 };
 
-exports.updateSubmissionStatus = (req, res) => {
-    const { status } = req.body;
-    const success = Submission.updateStatus(req.params.id, status, req.session.username);
-    
-    if (success) {
-        req.session.message = { type: 'success', text: `Status updated to ${status}` };
-    } else {
+exports.updateSubmissionStatus = async (req, res) => {
+    try {
+        const { status } = req.body;
+        const { id } = req.params;
+
+        const validStatuses = ['pending', 'reviewed', 'approved', 'rejected'];
+        if (!validStatuses.includes(status)) {
+            req.session.message = { type: 'error', text: 'Invalid status' };
+            return res.redirect('back');
+        }
+
+        const adminUsername = req.session.username;
+        const submission = Submission.updateStatus(id, status, adminUsername);
+
+        if (!submission) {
+            req.session.message = { type: 'error', text: 'Submission not found' };
+            return res.redirect('back');
+        }
+
+        // AUTO-SUBMIT TO ONERPM IF APPROVED
+        if (status === 'approved' && !submission.onerpSubmitted) {
+            console.log(`[Admin] Submission approved, auto-submitting to ONErpm...`);
+            
+            // Attempt ONErpm submission
+            const result = await submitToONErpm(submission);
+            
+            if (result.success) {
+                Submission.markOnerpSubmitted(id, true);
+                console.log(`[Admin] ✓ Successfully submitted to ONErpm`);
+                req.session.message = { 
+                    type: 'success', 
+                    text: `Status updated to ${status}. Submitted to ONErpm successfully!` 
+                };
+            } else {
+                Submission.markOnerpSubmitted(id, false, result.error);
+                console.error(`[Admin] ✗ Failed to submit to ONErpm:`, result.error);
+                req.session.message = { 
+                    type: 'error', 
+                    text: `Status updated to ${status}, but ONErpm submission failed: ${result.error}` 
+                };
+            }
+        } else {
+            req.session.message = { type: 'success', text: `Status updated to ${status}` };
+        }
+
+        res.redirect('back');
+    } catch (error) {
+        console.error('Error updating status:', error);
         req.session.message = { type: 'error', text: 'Failed to update status' };
+        res.redirect('back');
     }
-    
-    res.redirect('back');
+};
+
+// Manual retry ONErpm submission
+exports.retryOnerpSubmission = async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        const submission = Submission.getById(id);
+        if (!submission) {
+            req.session.message = { type: 'error', text: 'Submission not found' };
+            return res.redirect('back');
+        }
+
+        if (submission.status !== 'approved') {
+            req.session.message = { type: 'error', text: 'Submission must be approved first' };
+            return res.redirect('back');
+        }
+
+        if (submission.onerpSubmitted) {
+            req.session.message = { type: 'error', text: 'Already submitted to ONErpm' };
+            return res.redirect('back');
+        }
+
+        console.log(`[Admin] Manually retrying ONErpm submission...`);
+        
+        const result = await submitToONErpm(submission);
+        
+        if (result.success) {
+            Submission.markOnerpSubmitted(id, true);
+            Submission.logAction('onerp_retry', id, req.session.username, 'Manual ONErpm retry successful');
+            req.session.message = { type: 'success', text: 'Successfully submitted to ONErpm!' };
+        } else {
+            Submission.markOnerpSubmitted(id, false, result.error);
+            req.session.message = { type: 'error', text: `ONErpm submission failed: ${result.error}` };
+        }
+
+        res.redirect('back');
+    } catch (error) {
+        console.error('Error retrying ONErpm submission:', error);
+        req.session.message = { type: 'error', text: 'Failed to retry ONErpm submission' };
+        res.redirect('back');
+    }
 };
 
 // ==================== BULK OPERATIONS ====================

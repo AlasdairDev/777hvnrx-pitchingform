@@ -40,6 +40,13 @@ router.post('/submission/:id/status',
     adminController.updateSubmissionStatus
 );
 
+// Retry ONErpm submission (manual retry if auto-submit failed)
+router.post('/submission/:id/retry-onerp',
+    adminController.requireAuth,
+    adminController.requirePermission('edit'),
+    adminController.retryOnerpSubmission
+);
+
 // Archive submission
 router.post('/submission/:id/archive',
     adminController.requireAuth,
