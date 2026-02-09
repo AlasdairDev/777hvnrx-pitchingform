@@ -674,6 +674,43 @@
             border: 1px solid #52525b;
         }
 
+        /* ONErpm Status Badge */
+        .onerp-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .onerp-status.submitted {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+
+        .onerp-status.pending {
+            background: rgba(161, 161, 170, 0.1);
+            border: 1px solid rgba(161, 161, 170, 0.3);
+            color: #a1a1aa;
+        }
+
+        .onerp-status.failed {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .onerp-timestamp {
+            font-size: 0.75rem;
+            color: #71717a;
+            margin-top: 0.35rem;
+            display: block;
+        }
+
         .status-form {
             display: flex;
             flex-direction: column;
@@ -1513,6 +1550,28 @@
                                 </select>
                                 <button type="submit" class="btn btn-primary" style="width: 100%;">Update Status</button>
                             </form>
+
+                            ${submission.status === 'approved' ? `
+                                ${submission.onerpSubmitted ? `
+                                    <div class="onerp-status submitted">
+                                        ✓ Submitted to ONErpm
+                                    </div>
+                                    <span class="onerp-timestamp">Submitted: ${new Date(submission.onerpSubmittedAt).toLocaleString()}</span>
+                                ` : submission.onerpSubmissionError ? `
+                                    <div class="onerp-status failed">
+                                        ✗ ONErpm Submission Failed
+                                    </div>
+                                    <span class="onerp-timestamp" style="color: #ef4444;">${submission.onerpSubmissionError}</span>
+                                    <form method="POST" action="/admin/submission/${submission.id}/retry-onerp" style="margin-top: 0.75rem;">
+                                        <button type="submit" class="btn btn-primary" style="width: 100%;">Retry ONErpm Submission</button>
+                                    </form>
+                                ` : `
+                                    <div class="onerp-status pending">
+                                        ⏳ Pending ONErpm Submission
+                                    </div>
+                                    <span class="onerp-timestamp">Will auto-submit on approval</span>
+                                `}
+                            ` : ''}
                         </div>
 
                         <div class="modal-card">
