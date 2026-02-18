@@ -1,7 +1,7 @@
 {
   "name": "777heaven-records-admin",
   "version": "2.0.0",
-  "description": "Enhanced admin panel for 777 Heaven Records with multi-admin support and security features",
+  "description": "Enhanced admin panel for 777heaven Records with multi-admin support and security features",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -14,7 +14,7 @@
     "submissions",
     "records"
   ],
-  "author": "777 Heaven Records",
+  "author": "777Heaven Records",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -23,8 +23,7 @@
     "express-rate-limit": "^7.1.5",
     "express-session": "^1.17.3",
     "helmet": "^7.1.0",
-    "validator": "^13.11.0",
-    "puppeteer": "^21.6.1"
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
