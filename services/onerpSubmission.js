@@ -1,5 +1,5 @@
 // services/onerpSubmission.js
-const puppeteer = require('puppeteer');
+const { chromium } = require('playwright');
 
 async function submitToONErpm(submission) {
     let browser;
@@ -7,26 +7,22 @@ async function submitToONErpm(submission) {
     try {
         console.log(`[ONErpm] Starting submission for: ${submission.primaryArtist} - ${submission.productTitle}`);
         
-        browser = await puppeteer.launch({
+        browser = await chromium.launch({
             headless: true,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
                 '--disable-dev-shm-usage',
-                '--disable-accelerated-2d-canvas',
-                '--no-first-run',
-                '--no-zygote',
-                '--single-process',
                 '--disable-gpu'
             ]
         });
 
         const page = await browser.newPage();
-        await page.setViewport({ width: 1280, height: 800 });
+        await page.setViewportSize({ width: 1280, height: 800 });
         
         console.log('[ONErpm] Navigating to form...');
         await page.goto('https://forms.gle/kPnaaztgcRdb9Xn28', {
-            waitUntil: 'networkidle2',
+            waitUntil: 'networkidle',
             timeout: 30000
         });
 
@@ -202,7 +198,7 @@ async function submitToONErpm(submission) {
             });
 
             if (confirmationText) {
-                console.log('[ONErpm] ✓ Submission successful!');
+                console.log('[ONErpm] ✔ Submission successful!');
                 await browser.close();
                 return {
                     success: true,

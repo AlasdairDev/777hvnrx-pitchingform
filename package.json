@@ -23,6 +23,7 @@
     "express-rate-limit": "^7.1.5",
     "express-session": "^1.17.3",
     "helmet": "^7.1.0",
+    "playwright": "^1.58.2",
     "validator": "^13.11.0"
   },
   "devDependencies": {

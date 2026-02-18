@@ -3,7 +3,7 @@
 
 const express = require('express');
 const router = express.Router();
-const adminController = require('../controllers/adminController.js.backup'); 
+const adminController = require('../controllers/adminController');
 const { loginLimiter, apiLimiter } = require('../config/security'); 
 
 // ==================== PUBLIC ROUTES ====================
